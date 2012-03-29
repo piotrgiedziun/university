@@ -17,7 +17,7 @@ using namespace std;
  * define constants
  */
 const int INFINITY = INT_MAX; //max_value = 100
-char *file_name = "input/default_wiki.jjd";
+char *file_name = "input/4.jjd";
 bool type_matrix = true;
 bool type_dijkstra = false;
 
@@ -258,7 +258,7 @@ bool ford_bellman_matrix() {
 		nastepnik *item;
 		int w;
 
-		for(int i = 1; i <= nodes_count; i++) {
+		//for(int i = 1; i <= nodes_count; i++) {
 			for(int j = 1; j <= nodes_count; j++) {
 				u = n[j];
 				for(int e = 1; e <= edges_count; e++) {
@@ -287,7 +287,7 @@ bool ford_bellman_matrix() {
 									}
 								}
 			}
-		}
+		//}
 		return true;
 }
 
@@ -398,7 +398,7 @@ int main(int argc, char* argv[]) {
 		code_end=clock();
 	}
 
-	show_result(type_matrix);
+//	show_result(type_matrix);
 
 //	cout << endl << "TIME:" << endl;
 
