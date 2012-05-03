@@ -1,4 +1,4 @@
-.extern printf # funkcja stdio
+.extern printf ; funkcja stdio
 .extern c_char
 .extern c_printf_s
 
@@ -13,11 +13,11 @@ run:
 push %ebp
 mov %esp, %ebp
 
-# wyświetlenie zmiennej zadeklarowaniej z poziomu asm
+; wyświetlenie zmiennej zadeklarowaniej z poziomu asm
 push $val_text
 call printf
 
-# wyświetlenie zmiennej zadeklarowaniej z poziomu c 
+; wyświetlenie zmiennej zadeklarowaniej z poziomu c 
 mov $c_char, %eax
 push (%eax)
 call printf
