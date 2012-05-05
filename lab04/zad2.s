@@ -16,8 +16,8 @@ asm_div:
     finit
     fld input
     fld input2
-    fxch  
-    fdiv %st(1), %st(0)
+    fxch # st(1) <-> st(0) forma zapisu a/b a nie b/a
+    fdiv %st(1), %st(0) # dzielenie, zapis do st(0)
     fstp output
     break:
 
@@ -34,7 +34,7 @@ asm_add:
     finit
     fld input
     fld input2
-    fadd %st(1), %st(0)
+    fadd %st(1), %st(0) # mnożenie, zapis do st(0)
     fstp output
     break:
 
