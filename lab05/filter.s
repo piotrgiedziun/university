@@ -1,8 +1,8 @@
 .global Filter
-.extern maska
+
 .section .data
 max: .long -1, -1, -1
-sepia: .long 3,3,3
+
 .section .text
 
 .type Filter, @function
@@ -23,9 +23,9 @@ mull %ebx
 mull %ecx
 movl %eax, %ecx
 
+movq max, %mm1
 while:
 movq (%edi), %mm0
-movq sepia, %mm1
 #pxor %mm1, %mm0
 PAND %mm1, %mm0
 movq %mm0, (%edi)
