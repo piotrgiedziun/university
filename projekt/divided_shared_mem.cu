@@ -5,20 +5,12 @@
 
 #define MATRIX_WIDTH				2025
 #define MATRIX_HEIGHT				2025
-#define MATRIX_SIZE					4100625
-#define TAIL_WIDTH					45
-#define TAIL_HEIHGT					45
+#define MATRIX_SIZE					MATRIX_WIDTH*MATRIX_HEIGHT
+#define TILE_WIDTH					45
+#define TILE_HEIGHT					45
 #define INIT_THREADS_PER_BLOCK		256
 #define INIT_ELEMENTS_PER_THREAD	90 
-
-// simple set to testing
-// #define MATRIX_WIDTH				10
-// #define MATRIX_HEIGHT			10
-// #define MATRIX_SIZE				100
-// #define TAIL_WIDTH				45
-// #define TAIL_HEIHGT				45
-// #define INIT_THREADS_PER_BLOCK	2
-// #define INIT_ELEMENTS_PER_THREAD	2
+#define INIT_ELEMENTS_PER_BLOCK		INIT_ELEMENTS_PER_THREAD*INIT_THREADS_PER_BLOCK
 
 /*
 * Matrix transpose - device function 
@@ -30,21 +22,43 @@
 * 	- idata (int*)	- input matrix
 *	- odata (int*)	- output matix (allocated alrea)
 */
-__global__ void transpose_matrix(int* idata, int* odata) {
+__global__ void transpose_matrix(int* idata, int* odata, int block_per_row) {
 	// allocate shared memory
-	__shared__ int shared_input[TAIL_HEIHGT][TAIL_WIDTH];
-	__shared__ int shared_output[TAIL_HEIHGT][TAIL_WIDTH];
+	__shared__ int shared_input[TILE_HEIGHT][TILE_WIDTH];
+	__shared__ int shared_output[TILE_WIDTH][TILE_HEIGHT];
 	
 	// estimate current position
 	int line = threadIdx.x;
-	int blok = blockIdx.x;
+	int block = blockIdx.x;
 	
 	// local data from global memory (idata) to shared memory (shared_input)
+	int block_row = (block/block_per_row);
+	int block_column = block % block_per_row;
 	
-	// transose line to shared memory (shared_output)
+	// cpy
+	int block_start_pos =(block_row * (TILE_HEIGHT*MATRIX_WIDTH) + (block_column*TILE_WIDTH + (line*MATRIX_WIDTH))); //(block_row*TILE_HEIGHT+(line*MATRIX_WIDTH));
+	//int block_shift = TILE_WIDTH*block;
 	
-	// export converted data to output
-	//__syncthreads();
+	for(int i=0; i < TILE_WIDTH; i++) {
+		shared_input[line][i] = idata[block_start_pos+i];
+	}
+	
+	// single transposition blok
+	for(int i=0;i<TILE_WIDTH;i++)
+	{
+		shared_output[i][line] = shared_input[line][i];
+	}
+
+__syncthreads();
+	if(block == 0) {
+		block_start_pos = (block_column * (TILE_WIDTH*MATRIX_HEIGHT) + (block_row*TILE_HEIGHT + (line*MATRIX_HEIGHT)));
+		for(int i=0; i<TILE_HEIGHT; i++) {
+			odata[block_start_pos+i] = shared_output[line][i];
+ 		}
+	//v 2 memcpy
+	//memcpy( odata, shared_output, TILE_HEIGHT * sizeof(int) );  // TODO: napisac poprawnie zapisywanie wynikow w macierzy wynikowej
+	}
+
 }
 
 /*
@@ -57,8 +71,8 @@ __global__ void transpose_matrix(int* idata, int* odata) {
 *	- size (int)	- matrix size (number of elements)
 */
 __global__ void init_matrix( int *idata, int size ) {
-	int	elements_count,
-		start_id = threadIdx.x + (blockIdx.x * INIT_THREADS_PER_BLOCK );
+	int	elements_count;
+	int start_id = (threadIdx.x * INIT_ELEMENTS_PER_THREAD );
 	
 	// set elements count
 	if ( start_id+INIT_ELEMENTS_PER_THREAD > size ) {
@@ -68,29 +82,9 @@ __global__ void init_matrix( int *idata, int size ) {
 	}
 	
 	// set elementsPerThread elements
-	for( int i=start_id; i < elements_count; i++ )
-		idata[i] = i;
-}
-
-// slower version
-__global__ void init_matrix_cpy( int *idata, int size ) {
-	int init_values[INIT_ELEMENTS_PER_THREAD], // temp array of inital values
-	 	elements_count,
-		start_id = ( threadIdx.x + (blockIdx.x * blockDim.x) );
-	
-	// set elements count
-	if ( start_id+INIT_ELEMENTS_PER_THREAD > size ) {
-		elements_count = size-start_id;
-	}else{
-		elements_count = INIT_ELEMENTS_PER_THREAD;
-	}
-	
-	// set elementsPerThread elements
+	int value = start_id + ( blockIdx.x * INIT_ELEMENTS_PER_BLOCK );
 	for( int i=0; i < elements_count; i++ )
-		init_values[i] = i;
-	
-	// copy initial data to global memoory (idata)	
-	 memcpy(idata+start_id, init_values, elements_count * sizeof(int));
+		idata[value+i] = value+i;
 }
 
 /*
@@ -116,13 +110,25 @@ void print_matrix_window(int* h_matrix, int* d_matrix, int start_height, int sta
 	}
 }
 
-
+/*
+* return GB per second for given data
+*/
 double GBperSec(float runtime, double bytes) {
 	return 100*(bytes/1073741824)/runtime;
 }
 
 int main(void) {
-	int *d_idata, *d_odata, *h_matrix, blocks_count;
+	int number_of_device,device_number;
+	cudaGetDeviceCount(&number_of_device);
+	if(number_of_device >0){
+		for(device_number=0;device_number<number_of_device; device_number++){
+			cudaDeviceProp device_prop;
+			cudaGetDeviceProperties(&device_prop, device_number);
+			printf("number of device: %d prop: %s\n",device_number, device_prop.name);
+		}
+	}
+
+	int *d_idata, *d_odata, *h_matrix, blocks_count, block_per_row;
 	cudaEvent_t init_start, init_end;
 	float init_time;
 	// create init events
@@ -135,8 +141,8 @@ int main(void) {
 	cudaEventCreate(&transpose_end);
 
 	// size validation
-	if ( MATRIX_WIDTH % TAIL_WIDTH != 0
-	 	|| MATRIX_HEIGHT % TAIL_HEIHGT != 0) {
+	if ( MATRIX_WIDTH % TILE_WIDTH != 0
+	 	|| MATRIX_HEIGHT % TILE_HEIGHT != 0) {
 		printf("Invalid matrix size\n");
 		return 1;
 	}
@@ -148,9 +154,11 @@ int main(void) {
 	// matrix initialization
 	// set data to global memory
 	blocks_count = ceil(((MATRIX_SIZE+INIT_THREADS_PER_BLOCK-1)/INIT_THREADS_PER_BLOCK)/INIT_ELEMENTS_PER_THREAD);
-		
-	cudaEventRecord(init_start, 0); 
+	
+	cudaEventRecord(init_start, 0);
+ 
 	init_matrix<<< blocks_count, INIT_THREADS_PER_BLOCK >>>(d_idata, MATRIX_SIZE);
+	
 	cudaEventRecord(init_end, 0);
 	cudaEventSynchronize(init_end);
 	cudaEventElapsedTime(&init_time, init_start, init_end);
@@ -159,17 +167,20 @@ int main(void) {
 		blocks_count, INIT_THREADS_PER_BLOCK, INIT_ELEMENTS_PER_THREAD, init_time, GBperSec(init_time, MATRIX_SIZE*sizeof(int)));
 	print_matrix_window(h_matrix, d_idata, 0, 0, 10, 10);
 	
-	blocks_count = MATRIX_SIZE / (TAIL_WIDTH*TAIL_HEIHGT);
+	blocks_count = MATRIX_SIZE / (TILE_WIDTH*TILE_HEIGHT);
+	block_per_row = MATRIX_WIDTH/TILE_WIDTH;
 	
 	cudaEventRecord(transpose_start, 0);
-	transpose_matrix<<< blocks_count, TAIL_HEIHGT >>>(d_idata, d_odata);
+
+	transpose_matrix<<< blocks_count, TILE_HEIGHT >>>(d_idata, d_odata, block_per_row);
+	
 	cudaEventRecord(transpose_end, 0);
 	cudaEventSynchronize(transpose_end);
 	cudaEventElapsedTime(&transpose_time, transpose_start, transpose_end);
 
-	printf("\ntranspose matrix:\n\tblocks count: %d\n\tthreads per block: %d\n\ttime: %f ms\n\tspeed: %lf GB/s\n",
-		blocks_count, TAIL_HEIHGT, transpose_time, GBperSec(transpose_time, MATRIX_SIZE*sizeof(int)));
-	//print_matrix_window(h_matrix, d_odata, 0, 0, 10, 10);
+	printf("\ntranspose matrix:\n\tblocks count: %d\n\tthreads per block: %d\n\tblock per row: %d\n\ttime: %f ms\n\tspeed: %lf GB/s\n",
+		blocks_count, TILE_HEIGHT, block_per_row, transpose_time, GBperSec(transpose_time, MATRIX_SIZE*sizeof(int)));
+	print_matrix_window(h_matrix, d_odata, 0, 0, 10, 10);
 		
 	// clear memory allocation
 	cudaFree( d_idata );
