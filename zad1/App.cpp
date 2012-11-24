@@ -45,11 +45,11 @@ void main(int argc, char **argv) {
 
 			// start instance
 			m.setTasks(tasks, INSTANCE_SIZE);
-			m.start();
+			
 
 			// show instance result
-			cout << "TWT = " << m.countTWT() << endl;
-
+			cout << "TWT = " << m.countTWT(m.start()) << endl;
+			break;
 			row = 0;
 			count = 0;
 		}else if( count == INSTANCE_SIZE ){

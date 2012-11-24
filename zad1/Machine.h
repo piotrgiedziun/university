@@ -9,8 +9,9 @@ private:
 public:
 	Machine(void);
 	void setTasks(Task * table,int size) ;
-	void start();
-	int countTWT();
+	int* start();
+	double calculateP(int* a,int* b,double T);
+	int countTWT(int* indexAraay);
 	~Machine(void);
 };
 
