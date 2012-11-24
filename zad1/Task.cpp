@@ -12,6 +12,14 @@ void Task::setData(int processingTime, int processingWeight, int dueDate) {
 	this->d = dueDate;
 }
 
+void Task::setTaskId(int id) {
+	this->id = id;
+}
+
+int Task::getTaskId() {
+	return this->id;
+}
+
 int Task::getProcessingTime() {
 	return this->p;
 }

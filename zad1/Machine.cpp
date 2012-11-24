@@ -9,6 +9,13 @@
 using namespace std;
 Machine::Machine(void)
 {
+	this->setParms(10000, 0.1, 0.999);
+}
+
+void Machine::setParms(double T, double Tmin, double a) {
+	this->T = T;
+	this->Tmin = Tmin;
+	this->a = a;
 }
 
 void Machine::setTasks(Task *table, int table_size) {
@@ -17,9 +24,9 @@ void Machine::setTasks(Task *table, int table_size) {
 }
 
 int* Machine::start() {
+	srand(time(NULL));
+	int min = INT_MAX;
 	int i = 0;
-	double T=1000;
-	double Tmin=100;
 	int* TasksA= new int[table_size];
 	int* TasksB= new int[table_size];
 	for (int i = 0; i < table_size; i++)
@@ -28,7 +35,6 @@ int* Machine::start() {
 	}
 	while(T > Tmin)
 	{
-		int srand=time(NULL);
 		memcpy(TasksB,TasksA,sizeof(int)*table_size);
 		int from =rand()%table_size;
 		int to=rand()%table_size;
@@ -39,18 +45,26 @@ int* Machine::start() {
 		if(countTWT(TasksB) < countTWT(TasksA))
 			memcpy(TasksA,TasksB,sizeof(int)*table_size);
 
-		else if(((double) rand() / (RAND_MAX+1))  < calculateP(TasksA,TasksB,T))
+		else if((double) (rand()/(double)(RAND_MAX+1))  < calculateP(TasksA,TasksB,T)) {
 			memcpy(TasksA,TasksB,sizeof(int)*table_size);
-		T = 0.9*T;
+		}
+
+		T = a*T;
 		i +=1;
-		cout << "TWT = " << countTWT(TasksA) << endl;
+
+		//if(countTWT(TasksA) < min) {
+		//	min = countTWT(TasksA);
+		//}
+		//cout << "\tTWT = " << countTWT(TasksA) << endl;
+		//system("pause");
 	}
+	//cout << min << endl;
 	return TasksA;
 }
 
 double Machine::calculateP(int* a,int* b,double T)
 {
-	return exp((-(double)(countTWT(b)-countTWT(b)))/T);
+	return exp((-(double)(countTWT(b)-countTWT(a)))/T);
 }
         //public static int getTasksPower(List<int> index, List<Task> tasks)
         //{
