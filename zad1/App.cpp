@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int INSTANCE_SIZE = 0;
+int INSTANCE_SIZE = 40;
 
 void main(int argc, char **argv) {
 
@@ -48,10 +48,7 @@ void main(int argc, char **argv) {
 			m.start();
 
 			// show instance result
-			cout << "task[0]={" << 
-				tasks[0].getProcessingTime() << ", " <<
-				tasks[0].getProcessingWeight() << ", " <<
-				tasks[0].getDueDate() << "}" << endl;
+			cout << "TWT = " << m.countTWT() << endl;
 
 			row = 0;
 			count = 0;
