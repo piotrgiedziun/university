@@ -1,21 +1,26 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <sstream>
+#include <time.h>
 
 #include "Task.h"
 #include "Machine.h"
 
 using namespace std;
 
-int INSTANCE_SIZE = 0;
+const int INSTANCE_SIZE = 40;
+const int PARMS_SIZE = 4;
+
+double PARMS[PARMS_SIZE][3] = {
+	{ 10000, 0.1, 0.999 },
+	{ 10000, 0.1, 0.9999 },
+	{ 1000, 0.001, 0.999 },
+	{ 1000, 0.001, 0.9999 }
+};
 
 void main(int argc, char **argv) {
-
-	// !debug mode
-	if( INSTANCE_SIZE == 0 ) {
-		cout << "instance size= ";
-		cin >> INSTANCE_SIZE;
-	}
+	// times
+	clock_t s, f;
 
 	// temp tables - in order to load data
 	int *processingTime = new int[INSTANCE_SIZE];
@@ -25,53 +30,61 @@ void main(int argc, char **argv) {
 
 	// task table
 	Task *tasks = new Task[INSTANCE_SIZE];
-	// one instance of machine
-	Machine m;
 
-	ostringstream open_file_name;
-	open_file_name << "wt" << INSTANCE_SIZE << ".txt";
+	for(int j=0; j<PARMS_SIZE; j++) {
+		// one instance of machine
+		Machine m;
+		m.setParms(PARMS[j][0], PARMS[j][1], PARMS[j][2]);
 
-	ostringstream save_file_name;
-	save_file_name << "o_wt" << INSTANCE_SIZE << ".txt";
+		ostringstream open_file_name;
+		open_file_name << "wt" << INSTANCE_SIZE << ".txt";
 
-	fstream fs;
-	fs.open( save_file_name.str(), std::ios::out );
+		ostringstream save_file_name;
+		save_file_name << "o_" << j << "_wt" << INSTANCE_SIZE << ".txt";
 
-	ifstream ifs( open_file_name.str() );
+		cout << "outputing to " << save_file_name << endl;
 
-	int count = 0, row = 0, tmpInt;
-	while( ifs >> tmpInt ) {
+		fstream fs;
+		fs.open( save_file_name.str(), std::ios::out );
 
-		if(count == INSTANCE_SIZE && row == 2) {
+		ifstream ifs( open_file_name.str() );
 
-			// create Tasks objects
-			for(int i=0; i < INSTANCE_SIZE; i++) {
-				tasks[i].setTaskId(i);
-				tasks[i].setData(processingTime[i], processingWeight[i], dueDate[i]);
+		s = clock();
+		int count = 0, row = 0, tmpInt;
+		while( ifs >> tmpInt ) {
+
+			if(count == INSTANCE_SIZE && row == 2) {
+
+				// create Tasks objects
+				for(int i=0; i < INSTANCE_SIZE; i++) {
+					tasks[i].setTaskId(i);
+					tasks[i].setData(processingTime[i], processingWeight[i], dueDate[i]);
+				}
+
+				// start instance
+				m.setTasks(tasks, INSTANCE_SIZE);
+				int result = m.countTWT(m.start());
+
+				// show instance result
+				fs << result << endl;
+
+				row = 0;
+				count = 0;
+			}else if( count == INSTANCE_SIZE ){
+				row++;
+				count = 0;
 			}
 
-			// start instance
-			m.setParms(10000, 0.1, 0.999);
-			m.setTasks(tasks, INSTANCE_SIZE);
-			
-			// show instance result
-			int result = m.countTWT(m.start());
-			cout << result << endl;
-			fs << result << endl;
+			pointerTable[row][count] = tmpInt;
 
-			row = 0;
-			count = 0;
-		}else if( count == INSTANCE_SIZE ){
-			row++;
-			count = 0;
+			count++;
 		}
+		f = clock();
 
-		pointerTable[row][count] = tmpInt;
+		fs <<  (double)(f - s) / (double)(CLOCKS_PER_SEC);
 
-		count++;
-    }
-
-	fs.close();
+		fs.close();
+	}
 
 	system("PAUSE");
 }
