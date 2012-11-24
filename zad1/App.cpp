@@ -7,11 +7,17 @@
 
 using namespace std;
 
-int INSTANCE_SIZE = 40;
+int INSTANCE_SIZE = 0;
 
 void main(int argc, char **argv) {
 
 	cout << "start" << endl;
+
+	// !debug mode
+	if( INSTANCE_SIZE == 0 ) {
+		cout << "instance size= ";
+		cin >> INSTANCE_SIZE;
+	}
 
 	// temp tables - in order to load data
 	int *processingTime = new int[INSTANCE_SIZE];
@@ -31,13 +37,16 @@ void main(int argc, char **argv) {
 	int count = 0, row = 0, tmpInt;
 	while( ifs >> tmpInt ) {
 		if(count == INSTANCE_SIZE && row == 2){
+
 			// create Tasks objects
 			for(int i=0; i < INSTANCE_SIZE; i++) {
 				tasks[i].setData(processingTime[0], processingWeight[0], dueDate[0]);
 			}
+
 			// start instance
-			m.setTasks(tasks,INSTANCE_SIZE);
+			m.setTasks(tasks, INSTANCE_SIZE);
 			m.start();
+
 			// show instance result
 			cout << "task[0]={" << 
 				tasks[0].getProcessingTime() << ", " <<
