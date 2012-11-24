@@ -15,7 +15,9 @@ private:
 	int d;
 
 public:
+	Task(){};
 	Task(int, int, int);
+	void setData(int, int, int);
 	int getProcessingTime();
 	int getProcessingWeight();
 	int getDueDate();

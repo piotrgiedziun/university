@@ -6,6 +6,12 @@ Task::Task(int processingTime, int processingWeight, int dueDate) {
 	this->d = dueDate;
 }
 
+void Task::setData(int processingTime, int processingWeight, int dueDate) {
+	this->p = processingTime;
+	this->w = processingWeight;
+	this->d = dueDate;
+}
+
 int Task::getProcessingTime() {
 	return this->p;
 }

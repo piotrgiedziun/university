@@ -1,23 +1,61 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <sstream>
 
 #include "Task.h"
+#include "Machine.h"
 
 using namespace std;
 
+int INSTANCE_SIZE = 40;
+
 void main(int argc, char **argv) {
 
-	// wczytuje 125 instancji
+	cout << "start" << endl;
 
-	// startuje 125 instancji
-	
-    ifstream ifs("wt40.txt");
+	// temp tables - in order to load data
+	int *processingTime = new int[INSTANCE_SIZE];
+	int *processingWeight = new int[INSTANCE_SIZE];
+	int *dueDate = new int[INSTANCE_SIZE];
+	int *pointerTable[] = {processingTime, processingWeight, dueDate};
 
-	int i;
-	while(ifs >> i)
-    {
-        cout << i << endl;
+	// task table
+	Task *tasks = new Task[INSTANCE_SIZE];
+	// one instance of machine
+	Machine m;
+
+	ostringstream file_name;
+	file_name << "wt" << INSTANCE_SIZE << ".txt";
+
+	ifstream ifs( file_name.str() );
+	int count = 0, row = 0, tmpInt;
+	while( ifs >> tmpInt ) {
+		if(count == INSTANCE_SIZE && row == 2){
+			// create Tasks objects
+			for(int i=0; i < INSTANCE_SIZE; i++) {
+				tasks[i].setData(processingTime[0], processingWeight[0], dueDate[0]);
+			}
+			// start instance
+			m.setTasks(tasks);
+			m.start();
+			// show instance result
+			cout << "task[0]={" << 
+				tasks[0].getProcessingTime() << ", " <<
+				tasks[0].getProcessingWeight() << ", " <<
+				tasks[0].getDueDate() << "}" << endl;
+
+			row = 0;
+			count = 0;
+		}else if( count == INSTANCE_SIZE ){
+			row++;
+			count = 0;
+		}
+
+		pointerTable[row][count] = tmpInt;
+
+		count++;
     }
+
 
 	system("PAUSE");
 }
