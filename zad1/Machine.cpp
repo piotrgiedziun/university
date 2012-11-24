@@ -6,7 +6,9 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
+
 using namespace std;
+
 Machine::Machine(void)
 {
 
@@ -66,21 +68,6 @@ double Machine::calculateP(int* a,int* b,double T)
 {
 	return exp((-(double)(countTWT(b)-countTWT(a)))/T);
 }
-        //public static int getTasksPower(List<int> index, List<Task> tasks)
-        //{
-        //    int value = 0;
-        //    int cj = 0;
-        //    foreach (var i in index)
-        //    {
-        //        Task t = tasks[i];
-
-        //        cj += t.pj;
-        //        int tmp = cj - t.dj;
-        //        if (tmp > 0)
-        //            value += tmp * t.wj;
-        //    }
-        //    return value;
-        //}
 
 int Machine::countTWT(int* indexAraay) {
 	int value = 0;

@@ -12,7 +12,7 @@ const int INSTANCE_SIZE = 40;
 const int PARMS_SIZE = 4;
 
 double PARMS[PARMS_SIZE][3] = {
-	{ 10000, 0.1, 0.999 },
+	{ 10, 1, 0.9999 },
 	{ 10000, 0.1, 0.9999 },
 	{ 1000, 0.001, 0.999 },
 	{ 1000, 0.001, 0.9999 }
@@ -87,6 +87,11 @@ void main(int argc, char **argv) {
 		ifs.close();
 		fs.close();
 	}
+
+	delete[] processingTime;
+	delete[]  processingWeight;
+	delete[] dueDate;
+	delete[] tasks;
 
 	system("PAUSE");
 }
