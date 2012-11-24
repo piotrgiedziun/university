@@ -34,7 +34,6 @@ void main(int argc, char **argv) {
 	for(int j=0; j<PARMS_SIZE; j++) {
 		// one instance of machine
 		Machine m;
-		m.setParms(PARMS[j][0], PARMS[j][1], PARMS[j][2]);
 
 		ostringstream open_file_name;
 		open_file_name << "wt" << INSTANCE_SIZE << ".txt";
@@ -42,7 +41,8 @@ void main(int argc, char **argv) {
 		ostringstream save_file_name;
 		save_file_name << "o_" << j << "_wt" << INSTANCE_SIZE << ".txt";
 
-		cout << "outputing to " << save_file_name << endl;
+		cout << "parms " << PARMS[j][0] << " " << PARMS[j][1] << " " << PARMS[j][2] << endl;
+		cout << "outputing to " << save_file_name.str() << endl;
 
 		fstream fs;
 		fs.open( save_file_name.str(), std::ios::out );
@@ -62,6 +62,7 @@ void main(int argc, char **argv) {
 				}
 
 				// start instance
+				m.setParms(PARMS[j][0], PARMS[j][1], PARMS[j][2]);
 				m.setTasks(tasks, INSTANCE_SIZE);
 				int result = m.countTWT(m.start());
 
@@ -83,6 +84,7 @@ void main(int argc, char **argv) {
 
 		fs <<  (double)(f - s) / (double)(CLOCKS_PER_SEC);
 
+		ifs.close();
 		fs.close();
 	}
 

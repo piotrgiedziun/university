@@ -9,7 +9,7 @@
 using namespace std;
 Machine::Machine(void)
 {
-	this->setParms(10000, 0.1, 0.999);
+
 }
 
 void Machine::setParms(double T, double Tmin, double a) {
@@ -50,7 +50,7 @@ int* Machine::start() {
 		}
 
 		T = a*T;
-		i +=1;
+		i++;
 
 		//if(countTWT(TasksA) < min) {
 		//	min = countTWT(TasksA);
