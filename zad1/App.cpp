@@ -36,11 +36,11 @@ void main(int argc, char **argv) {
 	ifstream ifs( file_name.str() );
 	int count = 0, row = 0, tmpInt;
 	while( ifs >> tmpInt ) {
-		if(count == INSTANCE_SIZE && row == 2){
+		if(count == INSTANCE_SIZE && row == 2) {
 
 			// create Tasks objects
 			for(int i=0; i < INSTANCE_SIZE; i++) {
-				tasks[i].setData(processingTime[0], processingWeight[0], dueDate[0]);
+				tasks[i].setData(processingTime[i], processingWeight[i], dueDate[i]);
 			}
 
 			// start instance
