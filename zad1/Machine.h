@@ -5,7 +5,7 @@ class Machine
 {
 public:
 	Machine(void);
-	void setTasks(Task *);
+	void setTasks(Task * table,int size) ;
 	void start();
 	~Machine(void);
 };

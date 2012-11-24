@@ -6,7 +6,7 @@ Machine::Machine(void)
 {
 }
 
-void Machine::setTasks(Task *table) {
+void Machine::setTasks(Task *table,int size) {
 }
 
 void Machine::start() {

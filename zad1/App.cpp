@@ -36,7 +36,7 @@ void main(int argc, char **argv) {
 				tasks[i].setData(processingTime[0], processingWeight[0], dueDate[0]);
 			}
 			// start instance
-			m.setTasks(tasks);
+			m.setTasks(tasks,INSTANCE_SIZE);
 			m.start();
 			// show instance result
 			cout << "task[0]={" << 

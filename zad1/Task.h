@@ -16,8 +16,8 @@ private:
 
 public:
 	Task(){};
-	Task(int, int, int);
-	void setData(int, int, int);
+	Task(int processingTime, int processingWeight, int dueDate);
+	void setData(int processingTime, int processingWeight, int dueDate);
 	int getProcessingTime();
 	int getProcessingWeight();
 	int getDueDate();
