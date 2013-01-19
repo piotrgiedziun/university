@@ -60,12 +60,17 @@ int* Machine::start() {
 		memcpy(TasksB,TasksA,sizeof(int)*table_size);
 		int from =rand()%table_size;
 		int to=rand()%table_size;
-		swap(from,to,TasksB);
 
+		swap(from,to,TasksB);
+		
 		if(countTWT(TasksB) < countTWT(TasksA))
 			memcpy(TasksA,TasksB,sizeof(int)*table_size);
-
-
+		else
+			if(funkcjaAspirujaca(min,TasksB))
+			{
+				memcpy(TasksA,TasksB,sizeof(int)*table_size);
+			}
+		 min=countTWT(TasksA);
 		i++;
 	}
 	return TasksA;
