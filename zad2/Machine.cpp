@@ -20,10 +20,28 @@ void Machine::setTasks(Task *table, int table_size) {
 	this->table_size = table_size;
 }
 
+float Machine::runningTime() {
+	return ((float)clock() - (float)this->start_time)/CLOCKS_PER_SEC;
+}
+
+void Machine::startRunningTime() {
+	this->start_time = clock();
+}
+
++int Machine::funkcjaAspirujaca(int minmum,int* kolejnosc)
++{
++	return minmum>countTWT(kolejnosc);
++}
+
+
 int* Machine::start() {
 	srand(time(NULL));
+
+	this->startRunningTime();
+
 	int min = INT_MAX;
 	int tabu_size_max = 5;
+	int time_max = 10;
 	int i = 0;
 	int* TasksA= new int[table_size];
 	int* TasksB= new int[table_size];
@@ -37,7 +55,7 @@ int* Machine::start() {
 	// lista tabu
 	Lifo tabu(tabu_size_max, table_size);
 
-	while(T > Tmin)
+	while(this->runningTime() < time_max)
 	{
 		memcpy(TasksB,TasksA,sizeof(int)*table_size);
 		int from =rand()%table_size;
@@ -47,11 +65,7 @@ int* Machine::start() {
 		if(countTWT(TasksB) < countTWT(TasksA))
 			memcpy(TasksA,TasksB,sizeof(int)*table_size);
 
-		else if((double) (rand()/(double)(RAND_MAX+1))  < calculateP(TasksA,TasksB,T)) {
-			memcpy(TasksA,TasksB,sizeof(int)*table_size);
-		}
 
-		T = a*T;
 		i++;
 	}
 	return TasksA;
@@ -62,11 +76,6 @@ void Machine::swap(int from,int to,int* tasksArray)
 		int tmp= tasksArray[to];
 		tasksArray[to]=tasksArray[from];
 		tasksArray[from]=tmp;
-}
-
-double Machine::calculateP(int* a,int* b,double T)
-{
-	return exp((-(double)(countTWT(b)-countTWT(a)))/T);
 }
 
 int Machine::countTWT(int* indexAraay) {
@@ -83,10 +92,7 @@ int Machine::countTWT(int* indexAraay) {
 	}
 	return value;
 }
-int Machine::funkcjaAspiruj¹ca(int minmum,int* kolejnoœæ)
-{
-	return minmum>countTWT(kolejnoœæ);
-}
+
 Machine::~Machine(void)
 {
 }

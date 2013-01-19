@@ -1,5 +1,6 @@
 #include "Task.h"
 #include "Lifo.h"
+#include <time.h>
 
 #pragma once
 class Machine
@@ -7,17 +8,16 @@ class Machine
 private:
 	int table_size;
 	Task *table;
-	double T;
-	double Tmin;
-	double a;
+	clock_t start_time;
 public:
 	Machine(void);
+	float runningTime();
+	void startRunningTime();
 	void setTasks(Task * table,int size) ;
 	int* start();
-	double calculateP(int* a,int* b,double T);
 	void swap(int,int,int*);
 	int countTWT(int* indexAraay);
-	int funkcjaAspiruj¹ca(int minmum,int* kolejnoœæ);
 	~Machine(void);
+	int funkcjaAspirujaca(int minmum,int* kolejnsc);
 };
 

@@ -20,6 +20,8 @@ void main(int argc, char **argv) {
 
 	// one instance of machine
 	Machine m;
+	m.startRunningTime();
+	m.runningTime();
 
 	ostringstream open_file_name;
 	open_file_name << "data/" << INSTANCE_SIZE << ".txt";
@@ -46,10 +48,11 @@ void main(int argc, char **argv) {
 			tasks[count].setData(tmpInt[0], tmpInt[1], tmpInt[2]);
 			count++;
 		}
-		f = clock();
-
 		m.setTasks(tasks, INSTANCE_SIZE);
+
+		s = clock();
 		int result = m.countTWT(m.start());
+		f = clock();
 
 		// show instance result
 		fs << result << endl;
