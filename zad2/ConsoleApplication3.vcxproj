@@ -76,11 +76,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Lifo.cpp" />
     <ClCompile Include="Machine.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Task.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Lifo.h" />
     <ClInclude Include="Machine.h" />
     <ClInclude Include="Task.h" />
   </ItemGroup>

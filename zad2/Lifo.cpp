@@ -1,6 +1,5 @@
 #include "Lifo.h"
 #include <vector>
-#include <iostream>
 
 Lifo::Lifo(int max_size, int tasks_count)
 {
@@ -22,7 +21,6 @@ void Lifo::pusz(int* order) {
 HalloType Lifo::hallo_qm(int* order) {
 	for(std::vector<int*>::iterator it = this->orders.begin(); it != this->orders.end(); ++it) {
 		for(int i = 0; i < this->order_tasks_count; i++) {
-			std::cout << (*it)[i] << " " << order[i] << std::endl;
 			if( (*it)[i] != order[i] ) 
 				continue;
 			return HALLO_JESTEM;
