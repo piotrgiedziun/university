@@ -28,10 +28,10 @@ void Machine::startRunningTime() {
 	this->start_time = clock();
 }
 
-+int Machine::funkcjaAspirujaca(int minmum,int* kolejnosc)
-+{
-+	return minmum>countTWT(kolejnosc);
-+}
+int Machine::funkcjaAspirujaca(int minmum,int* kolejnosc)
+{
+	return minmum>countTWT(kolejnosc);
+}
 
 
 int* Machine::start() {
