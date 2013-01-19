@@ -5,6 +5,7 @@
 
 #include "Task.h"
 #include "Machine.h"
+#include "Lifo.h"
 
 using namespace std;
 
@@ -48,8 +49,7 @@ void main(int argc, char **argv) {
 		f = clock();
 
 		m.setTasks(tasks, INSTANCE_SIZE);
-		m.start();
-		int result = m.countTWT();
+		int result = m.countTWT(m.start());
 
 		// show instance result
 		fs << result << endl;

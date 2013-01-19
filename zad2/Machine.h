@@ -1,4 +1,5 @@
 #include "Task.h"
+#include "Lifo.h"
 
 #pragma once
 class Machine
