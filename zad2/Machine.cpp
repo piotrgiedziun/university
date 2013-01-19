@@ -42,6 +42,7 @@ int* Machine::start() {
 	int min = INT_MAX;
 	int tabu_size_max = 5;
 	int time_max = 10;
+	int neibours_max = 10;
 	int i = 0;
 	int* TasksA= new int[table_size];
 	int* TasksB= new int[table_size];
@@ -72,6 +73,21 @@ int* Machine::start() {
 			}
 		 min=countTWT(TasksA);
 		i++;
+		int frame= neibours_max/2;
+		int tempDroga=min;
+		for(int j =0;j<frame;j++)
+		{
+			
+			int * permutacjaSomsiada;
+			if(countTWT(permutacjaSomsiada)<tempDroga||funkcjaAspirujaca())
+			{
+				tempDroga=countTWT(permutacjaSomsiada);
+				if(tempDroga<1.2*min)
+				{
+					frame+=i;
+				}
+			}
+		}
 	}
 	return TasksA;
 }
