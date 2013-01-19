@@ -13,7 +13,8 @@ private:
 	int swaps_max_size;
 	int tasks_size;
 public:
-	Lifo(int max_size, int tasks_size);
+	Lifo(void){};
+	void set(int max_size, int tasks_size);
 	~Lifo(void);
 	void pusz(int j, int k);
 	void poop();

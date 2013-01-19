@@ -1,7 +1,7 @@
 #include "Lifo.h"
 #include <vector>
 
-Lifo::Lifo(int max_size, int tasks_size)
+void Lifo::set(int max_size, int tasks_size)
 {
 	this->swaps_max_size = max_size;
 	this->tasks_size = tasks_size;

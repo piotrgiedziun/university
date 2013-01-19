@@ -1,4 +1,4 @@
-#include "Machine.h"
+﻿#include "Machine.h"
 #include "Task.h"
 #include "Lifo.h"
 #include <time.h>
@@ -33,6 +33,21 @@ int Machine::funkcjaAspirujaca(int minmum,int* kolejnosc)
 	return minmum>countTWT(kolejnosc);
 }
 
+int* Machine::lookForBestNeighbour(int from, int neighbours_max, const int* order) {
+	// wygeneruj neibours_max sąsiadów, a następnie wybierz jednego
+	int* best_solution = new int[this->table_size];
+
+	for(int i = 0; i < neighbours_max; i++) {
+		int to = rand() % this->table_size;
+		int* currentOrder = new int[this->table_size];
+		memcpy(currentOrder,order,sizeof(int)*table_size);
+		swap(from, to, currentOrder);
+
+		if( this->tabu.hallo_qm(currentOrder) ) {
+			
+		}
+	}
+}
 
 int* Machine::start() {
 	srand(time(NULL));
@@ -54,16 +69,14 @@ int* Machine::start() {
 	}
 
 	// lista tabu
-	Lifo tabu(tabu_size_max, table_size);
+	this->tabu.set(tabu_size_max, table_size);
 
 	while(this->runningTime() < time_max)
 	{
 		memcpy(TasksB,TasksA,sizeof(int)*table_size);
 		int from =rand()%table_size;
-		int to=rand()%table_size;
+		TasksB = this->lookForBestNeighbour(from, neibours_max, TasksB);
 
-		swap(from,to,TasksB);
-		
 		if(countTWT(TasksB) < countTWT(TasksA))
 			memcpy(TasksA,TasksB,sizeof(int)*table_size);
 		else
@@ -77,7 +90,7 @@ int* Machine::start() {
 		int tempDroga=min;
 		for(int j =0;j<frame;j++)
 		{
-			
+
 			int * permutacjaSomsiada;
 			if(countTWT(permutacjaSomsiada)<tempDroga||funkcjaAspirujaca())
 			{
