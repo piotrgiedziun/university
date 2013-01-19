@@ -83,7 +83,10 @@ int Machine::countTWT(int* indexAraay) {
 	}
 	return value;
 }
-
+int Machine::funkcjaAspiruj¹ca(int minmum,int* kolejnoœæ)
+{
+	return minmum>countTWT(kolejnoœæ);
+}
 Machine::~Machine(void)
 {
 }

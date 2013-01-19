@@ -17,6 +17,7 @@ public:
 	double calculateP(int* a,int* b,double T);
 	void swap(int,int,int*);
 	int countTWT(int* indexAraay);
+	int funkcjaAspiruj¹ca(int minmum,int* kolejnoœæ);
 	~Machine(void);
 };
 
