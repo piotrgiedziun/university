@@ -40,10 +40,7 @@ int* Machine::start() {
 		memcpy(TasksB,TasksA,sizeof(int)*table_size);
 		int from =rand()%table_size;
 		int to=rand()%table_size;
-		int tmp= TasksB[to];
-		TasksB[to]=TasksB[from];
-		TasksB[from]=tmp;
-
+		swap(from,to,TasksB);
 		if(countTWT(TasksB) < countTWT(TasksA))
 			memcpy(TasksA,TasksB,sizeof(int)*table_size);
 
@@ -53,15 +50,14 @@ int* Machine::start() {
 
 		T = a*T;
 		i++;
-
-		//if(countTWT(TasksA) < min) {
-		//	min = countTWT(TasksA);
-		//}
-		//cout << "\tTWT = " << countTWT(TasksA) << endl;
-		//system("pause");
 	}
-	//cout << min << endl;
 	return TasksA;
+}
+void swap(int from,int to,int* tasksArray)
+{
+		int tmp= tasksArray[to];
+		tasksArray[to]=tasksArray[from];
+		tasksArray[from]=tmp;
 }
 
 double Machine::calculateP(int* a,int* b,double T)
