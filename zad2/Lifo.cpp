@@ -1,29 +1,30 @@
 #include "Lifo.h"
 #include <vector>
 
-Lifo::Lifo(int max_size, int tasks_count)
+Lifo::Lifo(int max_size, int tasks_size)
 {
-	this->orders_max_size = max_size;
-	this->order_tasks_count = tasks_count;
+	this->swaps_max_size = max_size;
+	this->tasks_size = tasks_size;
 }
 
 void Lifo::poop() {
-	this->orders.pop_back();
+	this->swaps.pop_back();
 }
 
-void Lifo::pusz(int* order) {
-	if( this->orders.size() >= this->orders_max_size-1 )
+void Lifo::pusz(int j, int k) {
+	if( this->swaps.size() >= this->swaps_max_size )
 		this->poop();
 
-	this->orders.push_back(order);
+	betterPair p; p.j = j; p.k = k;
+	this->swaps.push_back(p);
 }
 
 HalloType Lifo::hallo_qm(int* order) {
-	for(std::vector<int*>::iterator it = this->orders.begin(); it != this->orders.end(); ++it) {
-		for(int i = 0; i < this->order_tasks_count; i++) {
-			if( (*it)[i] != order[i] ) 
-				continue;
-			return HALLO_JESTEM;
+	for(std::vector<betterPair>::iterator it = this->swaps.begin(); it != this->swaps.end(); ++it) {
+		betterPair p = (*it);
+		for(int i = 0; i < this->tasks_size; i++) {
+			if(p.k == order[i]) break;
+			if(p.j == order[i]) return HALLO_JESTEM;
 		}
 	}
 	return HALLO_NIE_MA_MNIE;
@@ -31,5 +32,5 @@ HalloType Lifo::hallo_qm(int* order) {
 
 Lifo::~Lifo(void)
 {
-	this->orders.clear();
+	this->swaps.clear();
 }

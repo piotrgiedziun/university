@@ -1,5 +1,6 @@
 #include "Machine.h"
 #include "Task.h"
+#include "Lifo.h"
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,14 +23,19 @@ void Machine::setTasks(Task *table, int table_size) {
 int* Machine::start() {
 	srand(time(NULL));
 	int min = INT_MAX;
+	int tabu_size_max = 5;
 	int i = 0;
 	int* TasksA= new int[table_size];
 	int* TasksB= new int[table_size];
 
+	// losowe rozwiazanie
 	for (int i = 0; i < table_size; i++)
 	{
 		TasksA[i]=i;
 	}
+
+	// lista tabu
+	Lifo tabu(tabu_size_max, table_size);
 
 	while(T > Tmin)
 	{
