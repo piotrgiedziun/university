@@ -44,7 +44,7 @@ void main(int argc, char **argv) {
 			cout << tmpInt[0] << " " << tmpInt[1] << " " << tmpInt[2] << endl;
 
 			// create Tasks objects
-			tasks[count].setTaskId(count);
+			tasks[count].setTaskId(count+1);
 			tasks[count].setData(tmpInt[0], tmpInt[1], tmpInt[2]);
 			count++;
 		}

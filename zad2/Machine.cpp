@@ -63,6 +63,7 @@ int* Machine::lookForBestNeighbour(const int neighbours_max, const int* order, i
 			int to = rand() % this->table_size;
 			int from =rand() % this->table_size;
 			int* currentOrder = new int[this->table_size];
+			memcpy(currentOrder,order,sizeof(int)*table_size);
 			swap(from, to, currentOrder);
 			return currentOrder;
 		}
@@ -94,7 +95,6 @@ int* Machine::start() {
 
 	while(this->runningTime() < time_max)
 	{
-		cout << "running time " << this->runningTime() << endl;
 		memcpy(TasksB,TasksA,sizeof(int)*table_size);
 		min=countTWT(TasksA);
 		i++;
@@ -104,7 +104,7 @@ int* Machine::start() {
 		{
 			int tabu_j, tabu_k;
 			TasksB = this->lookForBestNeighbour(neibours_max, TasksB, min, tabu_j, tabu_k);
-			if(countTWT(TasksB)<tempDroga||funkcjaAspirujaca(min,TasksB))
+			if(countTWT(TasksB)<tempDroga)
 			{
 				tempDroga=countTWT(TasksB);
 				if(tempDroga<1.2*min)
@@ -118,6 +118,11 @@ int* Machine::start() {
 			memcpy(TasksA,TasksB,sizeof(int)*table_size);
 
 	}
+
+	for(int i=0; i<this->table_size; i++) {
+		cout << "order " << this->table[TasksA[i]].getTaskId() << endl;
+	}
+
 	return TasksA;
 }
 
