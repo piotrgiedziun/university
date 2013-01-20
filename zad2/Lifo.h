@@ -8,11 +8,10 @@ struct betterPair { int j; int k; };
 
 class Lifo
 {
-private:
+public:
 	std::vector<betterPair> swaps;
 	int swaps_max_size;
 	int tasks_size;
-public:
 	Lifo(void){};
 	void set(int max_size, int tasks_size);
 	~Lifo(void);

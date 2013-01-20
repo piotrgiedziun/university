@@ -17,7 +17,7 @@ public:
 	void setTasks(Task * table,int size) ;
 	int* start();
 	void swap(int,int,int*);
-	int countTWT(int* indexAraay);
+	int countTWT(const int* indexAraay);
 	int* lookForBestNeighbour(const int neighbours_max, const int* order, int min, int &j, int &k); //j,k - output
 	~Machine(void);
 	int funkcjaAspirujaca(int minmum,int* kolejnsc);
