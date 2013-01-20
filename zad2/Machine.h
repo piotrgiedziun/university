@@ -18,7 +18,7 @@ public:
 	int* start();
 	void swap(int,int,int*);
 	int countTWT(int* indexAraay);
-	int* lookForBestNeighbour(int from, int neighbours_max, const int* order);
+	int* lookForBestNeighbour(int neighbours_max, const int* order, int min, int &j, int &k); //j,k - output
 	~Machine(void);
 	int funkcjaAspirujaca(int minmum,int* kolejnsc);
 };
