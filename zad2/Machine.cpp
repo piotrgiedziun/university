@@ -77,13 +77,7 @@ int* Machine::start() {
 		int from =rand()%table_size;
 		TasksB = this->lookForBestNeighbour(from, neibours_max, TasksB);
 
-		if(countTWT(TasksB) < countTWT(TasksA))
-			memcpy(TasksA,TasksB,sizeof(int)*table_size);
-		else
-			if(funkcjaAspirujaca(min,TasksB))
-			{
-				memcpy(TasksA,TasksB,sizeof(int)*table_size);
-			}
+		
 		 min=countTWT(TasksA);
 		i++;
 		int frame= neibours_max/2;
@@ -92,20 +86,23 @@ int* Machine::start() {
 		{
 
 			int * permutacjaSomsiada;
-			if(countTWT(permutacjaSomsiada)<tempDroga||funkcjaAspirujaca())
+			if(countTWT(permutacjaSomsiada)<tempDroga||funkcjaAspirujaca(min,permutacjaSomsiada))
 			{
 				tempDroga=countTWT(permutacjaSomsiada);
 				if(tempDroga<1.2*min)
 				{
-					frame+=i;
+					//tabu.pusz();
+					//frame+=j;
 				}
 			}
 		}
+		if(countTWT(TasksB) < countTWT(TasksA))
+			memcpy(TasksA,TasksB,sizeof(int)*table_size);
 	}
 	return TasksA;
 }
 
-void Machine::swap(int from,int to,int* tasksArray)
+void Machine::swap(int from,int to, int* tasksArray)
 {
 		int tmp= tasksArray[to];
 		tasksArray[to]=tasksArray[from];
