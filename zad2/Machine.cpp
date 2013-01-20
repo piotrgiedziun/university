@@ -33,7 +33,7 @@ int Machine::funkcjaAspirujaca(int minmum,int* kolejnosc)
 	return minmum>countTWT(kolejnosc);
 }
 
-int* Machine::lookForBestNeighbour(int neighbours_max, const int* order, int min, int &j, int &k) {
+int* Machine::lookForBestNeighbour(const int neighbours_max, const int* order, int min, int &j, int &k) {
 	// wygeneruj neibours_max sąsiadów, a następnie wybierz jednego
 	int* best_solution = new int[this->table_size];
 	int well_not_rly = 0; // inc jeśli rozwiązanie nie jest lepsze
@@ -77,7 +77,7 @@ int* Machine::start() {
 
 	int min = INT_MAX;
 	int tabu_size_max = 5;
-	int time_max = 10;
+	int time_max = 2;
 	int neibours_max = 10;
 	int i = 0;
 	int* TasksA= new int[table_size];
@@ -94,22 +94,23 @@ int* Machine::start() {
 
 	while(this->runningTime() < time_max)
 	{
+		cout << "running time " << this->runningTime() << endl;
 		memcpy(TasksB,TasksA,sizeof(int)*table_size);
-		int j, k;
 		min=countTWT(TasksA);
 		i++;
 		int frame= neibours_max/2;
 		int tempDroga=min;
 		for(int j =0;j<frame;j++)
 		{
-			TasksB = this->lookForBestNeighbour(neibours_max, TasksB, min, j, k);
+			int tabu_j, tabu_k;
+			TasksB = this->lookForBestNeighbour(neibours_max, TasksB, min, tabu_j, tabu_k);
 			if(countTWT(TasksB)<tempDroga||funkcjaAspirujaca(min,TasksB))
 			{
 				tempDroga=countTWT(TasksB);
 				if(tempDroga<1.2*min)
 				{
-					tabu.pusz(j,k);
-					frame+=i;
+					tabu.pusz(tabu_j, tabu_k);
+					frame+=j;
 				}
 			}
 		}

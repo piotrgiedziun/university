@@ -55,6 +55,7 @@ void main(int argc, char **argv) {
 		f = clock();
 
 		// show instance result
+		cout << "best " << result << endl;
 		fs << result << endl;
 		fs <<  (double)(f - s) / (double)(CLOCKS_PER_SEC);
 
