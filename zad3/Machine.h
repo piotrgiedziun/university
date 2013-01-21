@@ -8,7 +8,6 @@ class Machine
 private:
 	int table_size;
 	Task *table;
-	Lifo tabu;
 	clock_t start_time;
 public:
 	Machine(void);
@@ -16,10 +15,10 @@ public:
 	void startRunningTime();
 	void setTasks(Task * table,int size) ;
 	int* start();
+	int* Machine::ranomizeOrder(int tableSize);
+	int Machine::getMinimumFromPopulation(int** population,int populationSize);
 	void swap(int,int,int*);
 	int countTWT(const int* indexAraay);
-	int* lookForBestNeighbour(const int neighbours_max, const int* order, int min, int &j, int &k); //j,k - output
 	~Machine(void);
-	int funkcjaAspirujaca(int minmum,int* kolejnsc);
 };
 
