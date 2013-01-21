@@ -62,25 +62,80 @@ int* Machine::start() {
 	int min = INT_MAX;
 	int populationSize=20;
 	int i = 0;
-	int bylo = 0;
-	
+	int reproductionPart=10;
+	int mutationPart=3;
+	int crossover=populationSize-reproductionPart-mutationPart;
+
 	int** population= new int*[populationSize];
 	for(int i=0;i<populationSize;i++)
 	{
 		population[i]=ranomizeOrder(populationSize);
 	}
 
-	
-	//min=countTWT(TasksA);
+
+	min=getMinimumFromPopulation(population,populationSize);
 
 	while(true)
 	{
+
+		min=getMinimumFromPopulation(population,populationSize);
+		sort(reproductionPart,population,populationSize);
 
 
 	}
 
 
 	return ;
+}
+void Machine::reproduct(int n,int** population,int populationSize,int mutationPart,int crosoverPart)
+{
+	for(int i=0;i<n;i++)
+	{
+		if((i+n)<populationSize)
+		{
+			population[i+n]=population[i];
+		}
+	}
+	for(int i=n;i<n+mutationPart;i++)
+	{
+		swap(rand()%table_size,rand()%table_size,population[i]);
+	}
+	int realCrossPart=crosoverPart;
+	if(crosoverPart%2!=0)
+		realCrossPart--;
+	if(realCrossPart==0)
+		return;
+	for(int i=n+mutationPart;i<n+mutationPart+realCrossPart;i+=2)
+	{
+		swap(rand()%table_size,rand()%table_size,population[i]);
+	}
+
+}
+void Machine::crosover(int* first,int*second)
+{
+	for(int i=table_size/2;i<table_size;i++)
+	{
+		int j;
+		for(j=0;j<i;j++)
+		{
+			if(first[j]==second[i])
+				break;
+		}
+		if(j==i-1)
+			first[i]=second[i];
+	}
+	for(int i=table_size/2;i<table_size;i++)
+	{
+		int j;
+		for(j=0;j<i;j++)
+		{
+			if(second[j]==first[i])
+				break;
+		}
+		if(j==i-1)
+			second[i]=first[i];
+	}
+
 }
 void Machine::sort(int n,int** population,int populationSize )
 {

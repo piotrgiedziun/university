@@ -15,8 +15,11 @@ public:
 	void startRunningTime();
 	void setTasks(Task * table,int size) ;
 	int* start();
-	int* Machine::ranomizeOrder(int tableSize);
-	int Machine::getMinimumFromPopulation(int** population,int populationSize);
+	int* ranomizeOrder(int tableSize);
+	int getMinimumFromPopulation(int** population,int populationSize);
+	void reproduct(int n,int** population,int populationSize,int mutationPart,int crosoverPart);
+	void crosover(int* first,int*second);
+	void sort(int n,int** population,int populationSize );
 	void swap(int,int,int*);
 	int countTWT(const int* indexAraay);
 	~Machine(void);
