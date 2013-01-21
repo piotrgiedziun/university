@@ -80,9 +80,9 @@ int* Machine::start() {
 	this->startRunningTime();
 
 	int min = INT_MAX;
-	int tabu_size_max = 7;
-	int time_max = 20;
-	int neibours_max = 30;
+	int tabu_size_max = 20;
+	int time_max = 2;
+	int neibours_max = 10;
 	int i = 0;
 	int bylo = 0;
 	int* TasksA= new int[table_size];
