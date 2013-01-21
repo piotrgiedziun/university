@@ -49,8 +49,8 @@ int countTWTC(const int* indexAraay) {
 
 int taskComparator( const void *left, const void *right )
 {
-	int l=countTWTC((int*)left);
-	int r=countTWTC((int*)right);
+	int l=countTWTC(*(int**)left);
+	int r=countTWTC(*(int**)right);
 	return l-r;
 }
 
@@ -68,9 +68,11 @@ int* Machine::start() {
 	int** population= new int*[populationSize];
 	for(int i=0;i<populationSize;i++)
 	{
-		population[i]=ranomizeOrder(populationSize);
+		population[i]=ranomizeOrder(table_size);
 	}
-
+	for(int i =0;i<table_size;i++)
+		cout<<population[0][i]<<endl;
+	countTWT(population[0]);
 	int* best;
 	min=getMinimumFromPopulation(population,populationSize);
 	int i=0;
@@ -159,7 +161,10 @@ int Machine::countTWT(const int* indexAraay) {
 	int c = 0, t;
 
 	for (int i=0; i < table_size; i++ ) {
+				
+		
 		int index=indexAraay[i];
+		
 		c += table[index].getProcessingTime();
 
 		t = c - table[index].getDueDate();
@@ -173,6 +178,7 @@ int* Machine::getMinimumFromPopulation(int** population,int populationSize)
 	int* mininimum= population[0];
 	for(int i=1;i<populationSize;i++)
 	{
+		cout<<i<<endl;
 		if(countTWT(mininimum)>countTWT(population[i]))
 			mininimum= population[i];
 	}
