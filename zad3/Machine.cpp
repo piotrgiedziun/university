@@ -76,6 +76,7 @@ int* Machine::start() {
 	int* best;
 	min=getMinimumFromPopulation(population,populationSize);
 	int i=0;
+	int time;
 	while(i<20)
 	{
 		i++;
@@ -85,6 +86,7 @@ int* Machine::start() {
 			delete[] min;
 			min=minT;
 		}
+		time=countTWT(min);
 		sort(reproductionPart,population,populationSize);
 		reproduct(reproductionPart,population,populationSize,mutationPart,crossoverPart);
 
