@@ -59,12 +59,11 @@ int* Machine::start() {
 
 	this->startRunningTime();
 
-	int min = INT_MAX;
+	int* min;
 	int populationSize=20;
-	int i = 0;
 	int reproductionPart=10;
 	int mutationPart=3;
-	int crossover=populationSize-reproductionPart-mutationPart;
+	int crossoverPart=populationSize-reproductionPart-mutationPart;
 
 	int** population= new int*[populationSize];
 	for(int i=0;i<populationSize;i++)
@@ -72,29 +71,33 @@ int* Machine::start() {
 		population[i]=ranomizeOrder(populationSize);
 	}
 
-
+	int* best;
 	min=getMinimumFromPopulation(population,populationSize);
-
-	while(true)
+	int i=0;
+	while(i<20)
 	{
-
-		min=getMinimumFromPopulation(population,populationSize);
+		i++;
+		int* minT=getMinimumFromPopulation(population,populationSize);
+		if(countTWT(minT)<countTWT(min))
+		{
+			delete[] min;
+			min=minT;
+		}
 		sort(reproductionPart,population,populationSize);
-
+		reproduct(reproductionPart,population,populationSize,mutationPart,crossoverPart);
 
 	}
 
 
-	return ;
+	return min;
 }
 void Machine::reproduct(int n,int** population,int populationSize,int mutationPart,int crosoverPart)
 {
 	for(int i=0;i<n;i++)
 	{
-		if((i+n)<populationSize)
-		{
-			population[i+n]=population[i];
-		}
+		if((i+n)>=populationSize)
+			break;
+		population[i+n]=population[i];
 	}
 	for(int i=n;i<n+mutationPart;i++)
 	{
@@ -107,8 +110,9 @@ void Machine::reproduct(int n,int** population,int populationSize,int mutationPa
 		return;
 	for(int i=n+mutationPart;i<n+mutationPart+realCrossPart;i+=2)
 	{
-		swap(rand()%table_size,rand()%table_size,population[i]);
+		crosover(population[i],population[i+1]);
 	}
+
 
 }
 void Machine::crosover(int* first,int*second)
@@ -140,6 +144,8 @@ void Machine::crosover(int* first,int*second)
 void Machine::sort(int n,int** population,int populationSize )
 {
 	memcpy(population,population,populationSize*sizeof(int*));
+	tableC=table;
+	table_sizeC=table_size;
 	qsort(population,(size_t)populationSize,sizeof(int*),taskComparator);
 }
 void Machine::swap(int from,int to,int* tasksArray)
@@ -148,12 +154,27 @@ void Machine::swap(int from,int to,int* tasksArray)
 	tasksArray[to]=tasksArray[from];
 	tasksArray[from]=tmp;
 }
-int Machine::getMinimumFromPopulation(int** population,int populationSize)
+int Machine::countTWT(const int* indexAraay) {
+	int value = 0;
+	int c = 0, t;
+
+	for (int i=0; i < table_size; i++ ) {
+		int index=indexAraay[i];
+		c += table[index].getProcessingTime();
+
+		t = c - table[index].getDueDate();
+		if (t > 0)
+			value += t * table[index].getProcessingWeight();
+	}
+	return value;
+}
+int* Machine::getMinimumFromPopulation(int** population,int populationSize)
 {
-	int mininimum= countTWT(population[0]);
+	int* mininimum= population[0];
 	for(int i=1;i<populationSize;i++)
 	{
-		mininimum= min(mininimum,countTWT(population[0]));
+		if(countTWT(mininimum)>countTWT(population[i]))
+			mininimum= population[i];
 	}
 	return mininimum;
 }

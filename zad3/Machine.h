@@ -16,7 +16,7 @@ public:
 	void setTasks(Task * table,int size) ;
 	int* start();
 	int* ranomizeOrder(int tableSize);
-	int getMinimumFromPopulation(int** population,int populationSize);
+	int* getMinimumFromPopulation(int** population,int populationSize);
 	void reproduct(int n,int** population,int populationSize,int mutationPart,int crosoverPart);
 	void crosover(int* first,int*second);
 	void sort(int n,int** population,int populationSize );
