@@ -62,11 +62,14 @@ int* Machine::lookForBestNeighbour(const int neighbours_max, const int* order, i
 			// return random solution
 			//int to = rand() % this->table_size;
 			//int from = rand() % this->table_size;
+			delete[] currentOrder;
+			delete[] best_solution;
 			int* currentOrder = new int[this->table_size];
 			memcpy(currentOrder,order,sizeof(int)*table_size);
 			//swap(from, to, currentOrder);
 			return currentOrder;
 		}
+		delete[] currentOrder;
 	}
 	return best_solution;
 }
@@ -104,7 +107,9 @@ int* Machine::start() {
 		for(int j =0;j<frame;j++)
 		{
 			int tabu_j, tabu_k;
+			int * tmp =TasksB;
 			TasksB = this->lookForBestNeighbour(neibours_max, TasksB, min, tabu_j, tabu_k);
+			delete[] tmp;
 			if(countTWT(TasksB)<tempDroga)
 			{
 				tempDroga=countTWT(TasksB);
