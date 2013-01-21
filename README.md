@@ -1,5 +1,3 @@
-PEA
+PEA - PWr
 ===
-more: (ftp://sith.ict.pwr.wroc.pl/Informatyka/PEA)[ftp://sith.ict.pwr.wroc.pl/Informatyka/PEA]
-
-PWr
+more: ftp://sith.ict.pwr.wroc.pl/Informatyka/PEA
