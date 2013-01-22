@@ -22,6 +22,7 @@ public:
 	void sort(int n,int** population,int populationSize );
 	void swap(int,int,int*);
 	int countTWT(const int* indexAraay);
+	bool crosover_isset(int stop, int number, int* table);
 	~Machine(void);
 };
 

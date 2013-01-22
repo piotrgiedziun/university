@@ -105,43 +105,52 @@ void Machine::reproduct(int n,int** population,int populationSize,int mutationPa
 	{
 		this->swap(rand()%table_size,rand()%table_size,population[i]);
 	}
-	//int realCrossPart=crosoverPart;
-	//if(crosoverPart%2!=0)
-	//	realCrossPart--;
-	//if(realCrossPart==0)
-	//	return;
-	//for(int i=n+mutationPart;i<n+mutationPart+realCrossPart;i+=2)
-	//{
-	//	crosover(population[i],population[i+1]);
-	//}
+	int realCrossPart=crosoverPart;
+	if(crosoverPart%2!=0)
+		realCrossPart--;
+	if(realCrossPart==0)
+		return;
+	for(int i=n+mutationPart;i<n+mutationPart+realCrossPart;i+=2)
+	{
+		crosover(population[i],population[i+1]);
+	}
 
 
 }
-void Machine::crosover(int* first,int*second)
-{
-	for(int i=table_size;i<table_size;i++)
-	{
-		int j;
-		for(j=0;j<i;j++)
-		{
-			if(first[j]==second[i])
-				break;
-		}
-		if(j==i-1)
-			first[i]=second[i];
-	}
-	for(int i=table_size/2;i<table_size;i++)
-	{
-		int j;
-		for(j=0;j<i;j++)
-		{
-			if(second[j]==first[i])
-				break;
-		}
-		if(j==i-1)
-			second[i]=first[i];
+
+bool Machine::crosover_isset(int stop, int number, int* table) {
+	for(int j=0; j<stop; j++)
+		if(number==table[j]) 
+			return true;
+	return false;
+}
+
+void Machine::crosover(int* first,int*second) {
+	int r = (rand() % (this->table_size-1)) + 1;
+	int *of, *os, firstC, secondC;
+	of = new int[this->table_size];
+	os = new int[this->table_size];
+
+	for(int i=0; i<r; i++) {
+		of[i] = first[i];
+		os[i] = second[i];
 	}
 
+	firstC=secondC=r;
+
+	for(int i=0; i<this->table_size; i++) {
+		if(!crosover_isset(r, first[i], second)) {
+			os[secondC++] = first[i];
+		}
+		if(!crosover_isset(r, second[i], first)) {
+			of[firstC++] = second[i];
+		}
+	}
+
+	first = of;
+	second = os;
+	delete [] os;
+	delete [] of;
 }
 void Machine::sort(int n,int** population,int populationSize )
 {
