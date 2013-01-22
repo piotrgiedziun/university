@@ -70,20 +70,17 @@ int* Machine::start() {
 	{
 		population[i]=ranomizeOrder(table_size);
 	}
-	for(int i =0;i<table_size;i++)
-		cout<<population[0][i]<<endl;
 	countTWT(population[0]);
 	int* best;
 	min=getMinimumFromPopulation(population,populationSize);
 	int i=0;
 	int time;
-	while(i<20)
+	while(i<2000)
 	{
 		i++;
 		int* minT=getMinimumFromPopulation(population,populationSize);
 		if(countTWT(minT)<countTWT(min))
 		{
-			delete[] min;
 			min=minT;
 		}
 		time=countTWT(min);
@@ -101,27 +98,28 @@ void Machine::reproduct(int n,int** population,int populationSize,int mutationPa
 	{
 		if((i+n)>=populationSize)
 			break;
-		population[i+n]=population[i];
+		memcpy( population[i+n], population[i],sizeof(int)*table_size);
 	}
+
 	for(int i=n;i<n+mutationPart;i++)
 	{
-		swap(rand()%table_size,rand()%table_size,population[i]);
+		this->swap(rand()%table_size,rand()%table_size,population[i]);
 	}
-	int realCrossPart=crosoverPart;
-	if(crosoverPart%2!=0)
-		realCrossPart--;
-	if(realCrossPart==0)
-		return;
-	for(int i=n+mutationPart;i<n+mutationPart+realCrossPart;i+=2)
-	{
-		crosover(population[i],population[i+1]);
-	}
+	//int realCrossPart=crosoverPart;
+	//if(crosoverPart%2!=0)
+	//	realCrossPart--;
+	//if(realCrossPart==0)
+	//	return;
+	//for(int i=n+mutationPart;i<n+mutationPart+realCrossPart;i+=2)
+	//{
+	//	crosover(population[i],population[i+1]);
+	//}
 
 
 }
 void Machine::crosover(int* first,int*second)
 {
-	for(int i=table_size/2;i<table_size;i++)
+	for(int i=table_size;i<table_size;i++)
 	{
 		int j;
 		for(j=0;j<i;j++)
@@ -151,6 +149,8 @@ void Machine::sort(int n,int** population,int populationSize )
 	tableC=table;
 	table_sizeC=table_size;
 	qsort(population,(size_t)populationSize,sizeof(int*),taskComparator);
+	//for (int i =0;i<populationSize;i++)
+	//	cout<<countTWT(population[i])<<endl;
 }
 void Machine::swap(int from,int to,int* tasksArray)
 {
@@ -168,7 +168,8 @@ int Machine::countTWT(const int* indexAraay) {
 		int index=indexAraay[i];
 		
 		c += table[index].getProcessingTime();
-
+		//cout<<i<<endl;
+		//cout<<index<<endl;
 		t = c - table[index].getDueDate();
 		if (t > 0)
 			value += t * table[index].getProcessingWeight();
@@ -180,7 +181,7 @@ int* Machine::getMinimumFromPopulation(int** population,int populationSize)
 	int* mininimum= population[0];
 	for(int i=1;i<populationSize;i++)
 	{
-		cout<<i<<endl;
+		
 		if(countTWT(mininimum)>countTWT(population[i]))
 			mininimum= population[i];
 	}
