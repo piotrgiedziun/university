@@ -60,10 +60,9 @@ int* Machine::start() {
 	this->startRunningTime();
 
 	int* min;
-	int populationSize=20;
-	int reproductionPart=10;
-	int mutationPart=3;
-	int crossoverPart=populationSize-reproductionPart-mutationPart;
+	int populationSize=150;
+	int reproductionPart=30;
+	int crossoverPart=reproductionPart;
 
 	int** population= new int*[populationSize];
 	for(int i=0;i<populationSize;i++)
@@ -75,21 +74,26 @@ int* Machine::start() {
 	min=getMinimumFromPopulation(population,populationSize);
 	int i=0;
 	int time;
+	vector<int> times;
+	int sum=0;
+	int od=1;
 	while(i<2000)
 	{
+		
 		i++;
 		int* minT=getMinimumFromPopulation(population,populationSize);
 		if(countTWT(minT)<countTWT(min))
 		{
 			min=minT;
 		}
-		time=countTWT(min);
+		times.push_back(countTWT(min));
+		sum+=times.at(times.size()-1);
+
+		
 		sort(reproductionPart,population,populationSize);
-		reproduct(reproductionPart,population,populationSize,mutationPart,crossoverPart);
-
+		reproduct(reproductionPart,population,populationSize,0,crossoverPart);
+		
 	}
-
-
 	return min;
 }
 void Machine::reproduct(int n,int** population,int populationSize,int mutationPart,int crosoverPart)
@@ -101,20 +105,22 @@ void Machine::reproduct(int n,int** population,int populationSize,int mutationPa
 		memcpy( population[i+n], population[i],sizeof(int)*table_size);
 	}
 
-	for(int i=n;i<n+mutationPart;i++)
-	{
-		this->swap(rand()%table_size,rand()%table_size,population[i]);
-	}
-	int realCrossPart=crosoverPart;
-	if(crosoverPart%2!=0)
-		realCrossPart--;
-	if(realCrossPart==0)
-		return;
-	for(int i=n+mutationPart;i<n+mutationPart+realCrossPart;i+=2)
+
+	for(int i=n;i<populationSize-2;i+=2)
 	{
 		crosover(population[i],population[i+1]);
 	}
-
+	for(int i=0;i<populationSize;i++)
+	{
+		 if(rand()%70==1)
+		 {
+			this->swap(rand()%table_size,rand()%table_size,population[i]);
+			this->swap(rand()%table_size,rand()%table_size,population[i]);
+			this->swap(rand()%table_size,rand()%table_size,population[i]);
+			this->swap(rand()%table_size,rand()%table_size,population[i]);
+			this->swap(rand()%table_size,rand()%table_size,population[i]);
+		 }
+	}
 
 }
 

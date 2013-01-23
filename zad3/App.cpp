@@ -9,7 +9,7 @@
 
 using namespace std;
 
-const int INSTANCE_SIZE = 50;
+const int INSTANCE_SIZE = 40;
 
 void main(int argc, char **argv) {
 	// times
