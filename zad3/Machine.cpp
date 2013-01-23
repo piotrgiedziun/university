@@ -61,8 +61,8 @@ int* Machine::start() {
 
 	int* min;
 	int populationSize=150;
-	int reproductionPart=30;
-	int crossoverPart=reproductionPart;
+	int reproductionPart=50;
+	int crossoverPart=20;
 
 	int** population= new int*[populationSize];
 	for(int i=0;i<populationSize;i++)
@@ -77,7 +77,7 @@ int* Machine::start() {
 	vector<int> times;
 	int sum=0;
 	int od=1;
-	while(i<2000)
+	while(i<5000)
 	{
 		
 		i++;
@@ -106,7 +106,7 @@ void Machine::reproduct(int n,int** population,int populationSize,int mutationPa
 	}
 
 
-	for(int i=n;i<populationSize-2;i+=2)
+	for(int i=n;i<n+crosoverPart-2;i+=2)
 	{
 		crosover(population[i],population[i+1]);
 	}
