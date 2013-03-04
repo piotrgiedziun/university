@@ -1,0 +1,22 @@
+#!/bin/bash
+# ============================
+# Zmiana nazw wszystkich plików w zadanym katalogu (parametr wywołania skryptu), do 
+# których mamy ustawione prawo zapisu, przez dopisanie dodatkowego członu .old. Wcześniej 
+# należy skasować wszystkie pliki, które już mają takie rozszerzenie.
+# ============================
+# example:
+# ./zad1 .
+# ============================
+
+if [ $# -ne 1 -o ! -d $1 ]; then
+	echo Błędny katalog
+	exit
+fi
+
+# remove old files
+rm $(ls $1/*.old)
+
+for file in $(ls -l $1 | grep ^-.w | awk '{print $9}'); do
+	echo $1/$file
+	mv $1/$file $1/$file.old
+done

@@ -1,0 +1,18 @@
+#!/bin/bash
+# ============================
+# Kasowanie wszystkich plików w zadanym katalogu (parametr wywołania skryptu), poza 
+# plikami wykonywalnymi, mającymi ustawiony bit dostępu typu „execute”. 
+# ============================
+# example:
+# ./zad3 .
+# ============================
+
+if [ $# -ne 1 -o ! -d $1 ]; then
+	echo Błędny katalog
+	exit
+fi
+
+for file in $(ls -l $1 | grep ^-..- | awk '{print $9}'); do
+	echo $1/$file
+	rm $1/$file
+done

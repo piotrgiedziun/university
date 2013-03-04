@@ -1,0 +1,28 @@
+#!/bin/bash
+# ============================
+# Tworzenie nowych plików w zadanym katalogu (parametr wywołania skryptu), według listy 
+# umieszczonej w pliku (drugi parametr wywołania skryptu). Nowe pliki mają być zerowej 
+# wielkości (puste). Jeżeli jakiś plik już istnieje, to nie powinien zostać zniszczony.
+# ============================
+# example:
+# ./zad2 . zad2_file_list
+# ============================
+
+if [ $# -ne 2 ]; then
+	echo Podaj dwa parametry
+	exit
+fi
+
+if [ ! -f $2 ]; then
+	echo Brak listy plików
+	exit
+fi
+
+if [ ! -d $1 ]; then
+	mkdir $1
+fi
+
+for file in $(cat $2); do
+	touch $1/$file
+	echo touch $file
+done

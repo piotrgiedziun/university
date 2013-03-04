@@ -1,0 +1,20 @@
+#!/bin/bash
+# ============================
+# Porównanie zawartości dwóch zadanych katalogów (argumenty skryptu). Przy porównaniu 
+# należy ignorować podkatalogi. W wyniku wyświetlić na ekranie listę plików o identycznych 
+# nazwach w obu katalogach. 
+# ============================
+# example:
+# ./zad10 test1 test2
+# ============================
+
+if [ $# -ne 2 -o ! -d $1 -o ! -d $2 ]; then
+	echo Błędne katalogi
+	exit
+fi
+
+for file in $(ls $1); do
+	if [ -f $2/$file ]; then
+		echo $file
+	fi
+done

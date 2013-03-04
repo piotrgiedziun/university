@@ -1,0 +1,32 @@
+#!/bin/bash
+# ============================
+# Dla 2 katalogów uporzadkowac pliki regularne, tak aby w pierwszytm 
+# były wykonywalne w drugim reszta
+# ============================
+
+if [ $# -ne 2 ]; then
+    echo Podano błędną ilość argumentów
+    exit 1
+fi
+
+
+if [ ! -d $1 -o ! -d $2 ]; then
+    echo Podano błędny kaltalog/katalogi
+    exit 2
+fi
+
+# maja byc wykonywalne
+for file in $1/*; do
+    if [ -f $file -a ! -x $file ]; then
+        echo $file move to $2
+        mv $file $2
+    fi
+done
+
+# maja byc zwykle
+for file in $2/*; do
+    if [ -f $file -a -x $file]; then
+        echo $file move to $1
+        mv $file $1
+    fi
+done
