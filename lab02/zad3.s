@@ -28,7 +28,7 @@ while:
  cmp %ecx, %edi
 jnl while
 
-mov value(,%ecx,1), %bl
+# result in eax
 
 koniec:
     mov $SYSEXIT, %eax
