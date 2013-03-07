@@ -16,7 +16,9 @@ fi
 # remove old files
 rm $(ls $1/*.old) 2> /dev/null
 
-for file in $(ls -l $1 | grep ^-.w | awk '{print $9}'); do
-	echo $1/$file
-	mv $1/$file $1/$file.old
+for file in $1/*; do
+	if [ -w $file -a -f $file ]; then
+		echo $1/$file
+		mv $1/$file $1/$file.old
+	fi
 done
