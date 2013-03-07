@@ -34,11 +34,10 @@ int main(int argc, char* argv[]) {
 
 	pid_t pid;
 	int status;
-	do {
+	for(i = 0; i<argc-2; i++) {
 		pid = wait(&status);
-		if(pid != -1)
-			printf(">\npid = %d\nstatus = %d", pid, WEXITSTATUS(status));
-	}while(pid != -1);
+		printf(">\npid = %d\nstatus = %d", pid, WEXITSTATUS(status));
+	}
 
 	printf("the end\n");
 
