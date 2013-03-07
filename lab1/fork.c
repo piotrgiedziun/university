@@ -33,10 +33,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	pid_t pid;
+	int status;
 	do {
-		pid = wait();
+		pid = wait(&status);
 		if(pid != -1)
-			printf("pid = %d\n", pid);
+			printf(">\npid = %d\nstatus = %d", pid, WEXITSTATUS(status));
 	}while(pid != -1);
 
 	printf("the end\n");
