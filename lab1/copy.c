@@ -34,7 +34,7 @@ int main( int argc, char* argv[] ) {
     do {
         buf_count = read(file1,buf,SIZE);
         write(file2, buf, buf_count);
-    } while(buf_count != 1);
+    } while(buf_count == SIZE);
 
     close(file1);
     close(file2);
