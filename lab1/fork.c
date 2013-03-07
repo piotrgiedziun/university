@@ -1,17 +1,19 @@
 /**
-*  Fork process
-*  
-*  todo:
-*    spawn arcg-2 process and sleep them for argv[proc_id] times
-*    main sleep for argv[1] times
-*    wait for working childs
+* Fork process
 *
-*  usage:
-*    fork main_steps p1_steps p2_steps ... pn_steps
+* todo:
+* spawn arcg-2 process and sleep them for argv[proc_id] times
+* main sleep for argv[1] times
+* wait for working childs
+*
+* usage:
+* fork main_steps p1_steps p2_steps ... pn_steps
 */
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/wait.h>
+
 
 int main(int argc, char* argv[]) {
     int i;
@@ -36,10 +38,10 @@ int main(int argc, char* argv[]) {
 	int status;
 	for(i = 0; i<argc-2; i++) {
 		pid = wait(&status);
-		printf(">\npid = %d\nstatus = %d", pid, WEXITSTATUS(status));
+		printf(">\npid = %d\nstatus = %d\n", pid, WEXITSTATUS(status));
 	}
 
-	printf("the end\n");
+	printf("\nthe end\n");
 
 	return 1;
 }
