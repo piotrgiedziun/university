@@ -12,7 +12,7 @@ if [ $# -ne 1 -o ! -d $1 ]; then
 	exit
 fi
 
-for file in $(ls -l $1 | grep ^-..- | awk '{print $9}'); do
+for file in $1/* do
 	if [ ! -x $file -a -f $file ]; then
 		echo $1/$file
 		rm $1/$file
