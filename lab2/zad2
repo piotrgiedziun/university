@@ -24,7 +24,7 @@ fi
 
 for file in $1/*; do
     if [ -h $file ]; then
-        echo coppied link $file
+        echo copied link $file
          filepath=$(readlink -f $file)
            ln -sf $filepath $2/$file
     elif [ -f $file ]; then
