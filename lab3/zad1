@@ -1,0 +1,13 @@
+#!/bin/bash
+# w zadanym drzewie katalogów nalezy znaezc katalogi zawierajace conajminej
+# jednen podkatalog (na podtawie dowiązań twardych).
+# W danym katalogu muszą byc ustawione dla własciciela katalogu 
+# atrybuty czytania i wykonywania a nie moga byc zapisu, natiomiast dla grupy lub innych
+# nie jest ustawiony atrybut czytania.
+ 
+if [ $# -ne 1 -o ! -d $1 ]; then
+    echo Błędny katalog
+    exit
+fi
+
+find $1 -type d -links +2 -perm /u+r -perm /u+x ! -perm /u+w \( ! -perm /g+r -or ! -perm /o+r \) -printf "%f %n\\n" 2> /dev/null
