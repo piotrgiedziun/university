@@ -1,8 +1,8 @@
 #!/bin/bash
-# w zadanym drzewie katalogów nalezy znaezc katalogi zawierajace conajminej
-# jednen podkatalog (na podtawie dowiązań twardych).
-# W danym katalogu muszą byc ustawione dla własciciela katalogu 
-# atrybuty czytania i wykonywania a nie moga byc zapisu, natiomiast dla grupy lub innych
+# W zadanym drzewie katalogów nalezy znaeźć katalogi zawierajace co najminej
+# jednen podkatalog (na podstawie dowiązań twardych).
+# W danym katalogu muszą być ustawione dla właściciela katalogu 
+# atrybuty czytania i wykonywania a nie moga byćc zapisu, natiomiast dla grupy lub innych
 # nie jest ustawiony atrybut czytania.
  
 if [ $# -ne 1 -o ! -d $1 ]; then
