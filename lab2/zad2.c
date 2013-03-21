@@ -10,6 +10,7 @@
 * fork main_steps p1_steps p2_steps ... pn_steps
 */
 
+#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>

@@ -3,6 +3,7 @@
 * range_start range_end process_count
 */
 
+#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>

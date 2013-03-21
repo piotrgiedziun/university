@@ -12,8 +12,8 @@ int pierwsza(int n)  {
 // argv[2] -> stop
 int main(int argc, char* argv[]) {
 	int i,
-		pierwsze = 0
-		start = atoi(argv[1]),
+	pierwsze = 0,
+	start = atoi(argv[1]),
         end = atoi(argv[2]);
 
 	for(i = start; i < end; i++) {
