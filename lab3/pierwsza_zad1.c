@@ -1,3 +1,9 @@
+/**
+* Obliczanie ilosci liczb pierwszych z zadanego zakresu
+*
+* usage:
+* ./pierwsza_zad1 [zakres_start] [zakres_end]
+*/
 #include <stdlib.h>
 
 int pierwsza(int n)  {
