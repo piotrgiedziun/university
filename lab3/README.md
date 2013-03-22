@@ -9,6 +9,7 @@ Struktura master/slaver. Komunikacja odbywa się poprzez kod powrotu (max 255).
 
 **example usage:**
 > make zad1
+
 > ./zad1 1 1000000 2
 
 zad2
@@ -18,4 +19,5 @@ Struktura master/slaver. Komunikacja odbywa się poprzez pliki (blokowanie dost�
     
 **example usage:**
 > make zad2
+
 > ./zad2 1 1000000 2
