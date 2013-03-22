@@ -1,0 +1,10 @@
+#!/bin/bash
+
+find $1 -type l -print | while read file; do
+        link=$(readlink -f $file)
+        current=$(readlink -f $1/.)
+
+        if [[ $link/ = $current* ]]; then
+                echo $file
+        fi
+done
