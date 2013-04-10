@@ -18,7 +18,7 @@
 int main()
 {
 	int counter = 0;
-    // SET PB5 AS OUTPUT
+	// SET PB5 AS OUTPUT
 	DDRB |= _BV(LED);
 
 	// SET TIMER COUNT
@@ -30,16 +30,16 @@ int main()
 	TCCR1C = 0x00;		// COUNTER
 	
 	while (1) {
-        // TOV1 - Timer/Counter1, Overflow Flag
-        // TIFR1 - Timer/Counter1 Interrupt Flag Register
-        // IF OVERFLOW INTERRUPT OCCURED
+		// TOV1 - Timer/Counter1, Overflow Flag
+		// TIFR1 - Timer/Counter1 Interrupt Flag Register
+		// IF OVERFLOW INTERRUPT OCCURED
 		if (TIFR1 & _BV(TOV1)) {
 			// CLEAR OVERFLOW FLAG
 			TIFR1 = _BV(TOV1);
 			// SET TIMER COUNT
 			TCNT1  = TIMER_START;
 
-            // BLINK LED
+			// BLINK LED
 			counter++;
 			if (counter == 1000) {
 				PORTB |= _BV(LED);

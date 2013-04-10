@@ -18,7 +18,7 @@ volatile int counter = 0;
 volatile int new_year_counter = 10;
 int main()
 {
-    // SET ALL PORT B AS OUTPUT
+	// SET ALL PORT B AS OUTPUT
 	DDRB = 0xFFFFF;
 
 	// SET TIMER COUNT
