@@ -1,0 +1,25 @@
+#!/bin/bash
+# wejście -> plik tekstowy, zamień tabulatory na odpowiednia liczbe spacji
+# (tak, aby ilość spacji odpowiadała tablulatorowi)
+
+W_SIZE=8
+
+if [ $# -ne 2 ]; then
+    echo Błędna ilość argumetów
+    exit
+fi
+
+if [ ! -f $1 ]; then
+    echo Błędny plik wejściowy
+    exit
+fi
+
+awk -F "\t" -v w=$W_SIZE '{ 
+for(i=1; i<=NF; i++) {
+    printf($i);
+    for(j=0; j < w - (length($i) % w); j++) {
+        printf(" ");
+    }
+}
+printf("\n");
+}' $1 > $2
