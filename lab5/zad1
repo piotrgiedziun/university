@@ -6,4 +6,4 @@ if [ ! -d $1 ]; then
 	exit 1
 fi
 
-find $1 -type f | awk -F '/' '$NF ~ /^[^.]*$/'
+find $1 -type f | awk -F '/' '$NF !~ /\./'
