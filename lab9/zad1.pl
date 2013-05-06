@@ -31,7 +31,7 @@ sub common_substr {
 
 sub file {
 	if (-l $_) {
-		my $file_name = basename($_);
+		my $file_name = basename(ralpath($_));
 		my $to = dirname(realpath($_));
 		my $from = getcwd();
 
