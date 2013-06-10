@@ -40,11 +40,15 @@ class Snake {
 	int points;
 	int dir;
 	int speed;
+	int is_dead;
 	Map *map;
 public:
 	static pthread_mutex_t mutex;
+	static pthread_mutex_t dead_mutex;
+	static pthread_cond_t dead;
 	Snake() {}
 	void remove();
+	void remove_forever();
 	int moveTo(int x, int y, SnakePart tail);
 	Snake(int start_x, int start_y, int length, int _speed, Map *_map);
 	void tick();

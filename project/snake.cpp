@@ -8,6 +8,8 @@
 #include <vector>
 
 pthread_mutex_t Snake::mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t Snake::dead_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t Snake::dead = PTHREAD_MUTEX_INITIALIZER;
 
 Snake::Snake(int start_x, int start_y, int length, int _speed, Map *_map) {
 	// init snake
@@ -59,6 +61,8 @@ void Snake::tick() {
 	}
 
 	// set dir
+	dir = SNAKE_DIR_TOP;
+	
 	std::vector<int> dirs;
 	if(map->map[head.getY()+1][head.getX()] == MAP_EMPTY) {
 		dirs.push_back(SNAKE_DIR_TOP);
@@ -111,7 +115,6 @@ void Snake::tick() {
 		parts.push_front(SnakePart(head.getX()+x, head.getY()+y));
 
 		// redraw
-		//draw(restult);
 		redraw(restult, dir);
 
 		// wait
@@ -133,10 +136,14 @@ void Snake::redraw(int status, int dir) {
 	}else{
 		sym = ACS_UARROW;
 	}
+
 	pthread_mutex_lock( &(mutex) );
+
+	// drew head
 	attrset(COLOR_PAIR(COLOR_SNAKE));
 	mvaddch((parts.front()).getY(),(parts.front()).getX(), sym);
 
+	// delete taril
 	attrset(COLOR_PAIR(COLOR_DEFAUL));
 	mvaddch((parts.back()).getY(),(parts.back()).getX(), MAP_NONE_SYM);
 
@@ -161,6 +168,50 @@ void Snake::draw(int status) {
 }
 
 void Snake::remove() {
+	pthread_mutex_lock( &(Map::mutex) );
+	pthread_mutex_lock( &(mutex) );
+
+	attrset(COLOR_PAIR(COLOR_DEFAUL));
+
+	std::list<SnakePart>::iterator it;
+	for (it = parts.begin(); it != parts.end(); it++) {
+		if(it == parts.begin()) continue;
+		map->map[(*it).getY()][(*it).getX()] = MAP_EMPTY;
+		mvaddch((*it).getY(),(*it).getX(), MAP_NONE_SYM);
+	}
+
+	// remove all excep head
+	SnakePart head = parts.front();
+	parts.clear();
+	parts.push_back(head);
+	parts.push_back(head);
+
+	attrset(COLOR_PAIR(COLOR_SNAKE));
+	mvaddch(head.getY(),head.getX(), 'D');
+
+	refresh();
+	pthread_mutex_unlock( &(Map::mutex) );
+	pthread_mutex_unlock( &(mutex) );
+
+	// dead action
+
+	pthread_mutex_lock( &(Snake::dead_mutex) );
+		Snake::is_dead = 0;
+		pthread_cond_signal(&(Snake::dead)); 
+
+		while( Snake::is_dead == 0 ) {
+			Snake::is_dead = 1;
+			pthread_cond_wait(&(Snake::dead), &(Snake::dead_mutex));
+		}
+
+		Snake::is_dead = 1;		
+		//pthread_cond_signal(&(Snake::dead)); 
+	pthread_mutex_unlock( &(Snake::dead_mutex) ); 
+
+	tick();
+}
+
+void Snake::remove_forever() {
 	pthread_mutex_lock( &(Map::mutex) );
 	pthread_mutex_lock( &(mutex) );
 
