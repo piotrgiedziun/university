@@ -17,6 +17,7 @@ W celu użycia sygnału należy znając PID procesu wysłać sygnał SIGUSR1
 > make app1
 
 > ./app1
+
 > kill -10 [PID]
 
 app2
@@ -27,6 +28,9 @@ Implementacja odpowiednika "|" (pipe) z bash'a.
 > make app2
 
 > ls | wc | cat
+
 > ./app2 -p ls -p wc -p cat
+
 > ls
+
 > ./app2 -p ls
