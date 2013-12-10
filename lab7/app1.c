@@ -40,16 +40,8 @@ void *wplata( void *ptr ) {
         pthread_mutex_lock( &mutex_trans );
 
         while( *(data->account_trans) == 1 ) {
-            printf("wplata:%d\n", *(data->account_trans));
-            //pthread_cond_broadcast(&cond_trans);
             pthread_cond_wait(&cond_trans, &mutex_trans);
-            if( *(data->account_trans) == 0 ) {
-                *(data->account_trans) = 1;
-                pthread_cond_broadcast(&cond_trans);
-                break;
-            }
         }
-
         *(data->account_trans) = 1;
 
         pthread_mutex_unlock( &mutex_trans );
@@ -63,10 +55,12 @@ void *wplata( void *ptr ) {
 
     if(!RACE) {
         pthread_mutex_unlock( data->mutex );
+        
         pthread_mutex_lock( &mutex_trans );
         *(data->account_trans) = 0;
-        pthread_cond_broadcast(&cond_trans);
         pthread_mutex_unlock( &mutex_trans );
+
+        pthread_cond_signal(&cond_trans);
     }
 }
 
@@ -76,17 +70,9 @@ void *wyplata( void *ptr ) {
     if(!RACE) {
         pthread_mutex_lock( &mutex_trans );
 
-        while( *(data->account_trans) == 1 ) {
-            printf("wyplata:%d\n", *(data->account_trans));
-            //pthread_cond_broadcast(&cond_trans);
+        while( *(data->account_trans) == 1 ) {        
             pthread_cond_wait(&cond_trans, &mutex_trans);
-            if( *(data->account_trans) == 0 ) {
-                *(data->account_trans) = 1;
-                pthread_cond_broadcast(&cond_trans);
-                break;
-            }
         }
-
         *(data->account_trans) = 1;
 
         pthread_mutex_unlock( &mutex_trans );
@@ -101,10 +87,13 @@ void *wyplata( void *ptr ) {
             *(data->account_value) -= 100;
             break;
         } else {
+            // brak kasy
             pthread_mutex_lock( &mutex_trans );
             *(data->account_trans) = 0;
-            pthread_cond_broadcast(&cond_trans);
             pthread_mutex_unlock( &mutex_trans );
+            
+            pthread_cond_signal(&cond_trans);
+
             pthread_cond_wait(data->count, data->mutex);
         }
 
@@ -112,10 +101,12 @@ void *wyplata( void *ptr ) {
 
     if(!RACE) {
         pthread_mutex_unlock( data->mutex );
+        
         pthread_mutex_lock( &mutex_trans );
         *(data->account_trans) = 0;
-        pthread_cond_broadcast(&cond_trans);
         pthread_mutex_unlock( &mutex_trans );
+        
+        pthread_cond_signal(&cond_trans);
     }
 }
 
@@ -126,19 +117,13 @@ void *przelew( void *ptr ) {
         pthread_mutex_lock( &mutex_trans );
 
         while( *(data->account_from_trans) == 1 || *(data->account_to_trans) == 1 ) {
-            //pthread_cond_broadcast(&cond_trans);
-            pthread_cond_wait(&cond_trans, &mutex_trans);
-
-            if( *(data->account_from_trans) == 0 && *(data->account_to_trans) == 0) {
-                *(data->account_from_trans) = 1;
-                *(data->account_to_trans) = 1;
-                pthread_cond_broadcast(data->count_from);
-                pthread_cond_broadcast(data->count_to);
-                break;
-            }else if( *(data->account_from_trans) == 0 ) {
-                pthread_cond_broadcast(data->count_from);
+            if( *(data->account_from_trans) == 0 ) {
+                pthread_cond_wait(&cond_trans, &mutex_trans);
             }else if( *(data->account_to_trans) == 0 ) {
-                pthread_cond_broadcast(data->count_to);
+                pthread_cond_wait(&cond_trans, &mutex_trans);
+            }else{
+                // czekaj na koncie to
+                pthread_cond_wait(&cond_trans, &mutex_trans);
             }
         }
 
@@ -148,10 +133,8 @@ void *przelew( void *ptr ) {
         pthread_mutex_unlock( &mutex_trans );
     }
 
-    printf("powinno byc wolne..\n");
     pthread_mutex_lock( data->mutex_to );
     pthread_mutex_lock( data->mutex_from );
-    printf("jest wolne..\n");
 
     while(1) {
         if( *(data->account_from_value) >= 100) {
@@ -161,30 +144,38 @@ void *przelew( void *ptr ) {
             pthread_cond_signal( data->count_to );
             break;
         } else {
-            printf("brak kasy\n");
-
             pthread_mutex_lock( &mutex_trans );
             *(data->account_from_trans) = 0;
             *(data->account_to_trans) = 0;
             pthread_mutex_unlock( &mutex_trans );
+            //printf("brak kasy 2\n");
 
+            pthread_mutex_unlock( data->mutex_from );
             pthread_mutex_unlock( data->mutex_to );
-            pthread_cond_wait(data->count_from, data->mutex_from);
+
+            pthread_cond_broadcast(data->count_to);
+            pthread_cond_broadcast(data->count_from);
+
+            pthread_cond_wait(data->count_from, NULL);
         }
     }
+
+    pthread_mutex_unlock( data->mutex_from );
+    pthread_mutex_unlock( data->mutex_to );
+
     if(!RACE) {
-        pthread_mutex_unlock( data->mutex_to );
-        pthread_mutex_unlock( data->mutex_from );
         pthread_mutex_lock( &mutex_trans );
         *(data->account_from_trans) = 0;
         *(data->account_to_trans) = 0;
         pthread_mutex_unlock( &mutex_trans );
+        pthread_cond_signal(&cond_trans);
+        pthread_cond_signal(&cond_trans);
     }
 }
 
 int main() {
-    int acc1 = 0;
-    int acc2 = 0;
+    int acc1 = 440;
+    int acc2 = 440;
     int acc1trans = 0;
     int acc2trans = 0;
     pthread_mutex_t mutex_acc1 = PTHREAD_MUTEX_INITIALIZER;
@@ -211,21 +202,25 @@ int main() {
 
     int i;
 
-    for(i=0; i<THREADS_COUNT;) {
+    for(i=0; i<=50;) {
         // wplata
         pthread_create( &thread[i++], NULL, wplata, (void*) &args[1]);
         pthread_create( &thread[i++], NULL, wplata, (void*) &args[0]);
+    }
 
+    for(i=0; i<=4;) {
         // wyplata
         pthread_create( &thread[i++], NULL, wyplata, (void*) &args[1]);
         pthread_create( &thread[i++], NULL, wyplata, (void*) &args[0]);
+    }
 
+    for(i=0; i<=5;) {
         // przelewy
         pthread_create( &thread[i++], NULL, przelew, (void*) &argse[1]);
         pthread_create( &thread[i++], NULL, przelew, (void*) &argse[0]);
     }
 
-    for(i=0; i<THREADS_COUNT; i++) {
+    for(i=0; i<4+50; i++) {
         pthread_join( thread[i], NULL);
     }
 

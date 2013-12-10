@@ -19,6 +19,7 @@ void *client_thread(void *s_struct) {
     char *message , client_message[MESSAGE_LENGTH];
      
     while( (read_size = recv(s , client_message , MESSAGE_LENGTH , 0)) > 0 ) {
+        printf("got message\n");
         for(i=0; i<clients_count; i++) {
             if(s==clients[i])
                 continue;

@@ -56,8 +56,9 @@ int main(int argc , char *argv[]) {
             break;
 
         if(FD_ISSET(0, &readfds)) {
-            //scanf("%s", message);
-            fread(message, 1, sizeof message, stdin);
+            fgets(message, MESSAGE_LENGTH , stdin);
+            printf("send success\n");
+
             if( send(s, message, strlen(message), 0) < 0) {
                 perror("send failed");
                 return 1;
