@@ -8,7 +8,7 @@
 #include <signal.h>
 
 #define MAX_CLIENTS 10
-#define MESSAGE_LENGTH 100
+#define MESSAGE_LENGTH 512
 
 int clients_count = 0;
 int clients[MAX_CLIENTS];
@@ -19,7 +19,7 @@ void *client_thread(void *s_struct) {
     char *message , client_message[MESSAGE_LENGTH];
      
     while( (read_size = recv(s , client_message , MESSAGE_LENGTH , 0)) > 0 ) {
-        printf("got message\n");
+        printf("got new message from %d %d\n", s, read_size);
         for(i=0; i<clients_count; i++) {
             if(s==clients[i])
                 continue;
@@ -59,7 +59,7 @@ int main(int argc , char *argv[]) {
     }
     printf("bind done\n");
     
-    listen(s , 5);
+    listen(s, 5);
     len = sizeof(struct sockaddr_in);
 
     while( (client_s = accept(s, (struct sockaddr *)&client, (socklen_t*)&len)) ) {
