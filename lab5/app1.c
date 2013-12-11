@@ -21,11 +21,30 @@
 #define MUTEX_1		2
 #define MUTEX_2		3
 
+/**
+ * BRAK_KASY_1, BRAK_KASY_2, MUTEX_1, MUTEX_2 to semafory.
+ * BRAK_KASY_1 - blokuje dany wątek jeśli brakuje $ na koncie 1
+ * BRAK_KASY_2 - to samo na koncie 2
+ * MUTEX_1 - operacja na konice 1
+ * MUTEX_2 - operacja na konice 2
+ */
+
+
+/**
+ * Struktura pamięci współdzielonej
+ */
 typedef struct {
     int acc1_value;
     int acc2_value;
 } shared_struct_t;
 
+
+/**
+ * Funkcje jd_sem zajmują lub zwalniają semafor.
+ * wersja jd_sem_up2/jd_sem_down2 odpowiednio podnosi/zdejmuje dwa semafory jednocześnie
+ * jd_sem_lidl - jak nazwa wskazuje - takie promocje tylko w LIDLU - zdejmuje jeden, zajmuje drugi (jedna operacja)
+ * jd_sem_down2 - na potrzeby przelewów - zajmuje dwa, podnosi jeden (jedna operacja)
+ */
 void jd_sem_up(int semid, int id) {
 	struct sembuf sops;
 	sops.sem_num = id;
@@ -122,6 +141,10 @@ void jd_sem_close(int semid, int count) {
     }
 }
 
+/**
+ * Standardowa inicjalizacja semaforów.
+ * Semafory rejestrowane są w systemie.
+ */
 int jd_sem_init(int count) {
 	int i, semid, semkey, rc;
 	short *sarray;
@@ -136,6 +159,9 @@ int jd_sem_init(int count) {
         printf("ftok error");
         exit(1);
     }
+
+    // inicjalizacja semaforów - SEMKEYPATH wskazuje na /dev/null
+    // wiec inicjalizowane są każdorazowo
     semid = semget( semkey, count, 0666 | IPC_CREAT);
     if ( semid == -1 )
     {
@@ -143,10 +169,12 @@ int jd_sem_init(int count) {
         exit(1);
     }
 
+    // tablica wartości początkowej
     for(i=0; i<count; i++) {
     	sarray[i] = 1;
     }
 
+    // ustawienie wartości początkowej na 1
     rc = semctl( semid, 1, SETALL, sarray);
     if(rc == -1)
     {
@@ -156,7 +184,14 @@ int jd_sem_init(int count) {
 
     return semid;
 }
- 
+
+
+/**
+ * funkcja tworzy count-procesów, następnie w każdym wykonuje count_i-razy wpłate
+ * usleep użyte dla uwydatnienia działania. 
+ * wpłata nie ma większej logiki
+ * po wpłacie odblokowanie semafora brak kasy - "budzi" to czekające procesy
+ */
 void wplata(int* value, int fd, int semid, int brak_kasy, int mutex, int count, int count_i ) {
 	int j, i, pid, trans;
 	for(j=0; j<count; j++) {
@@ -171,8 +206,7 @@ void wplata(int* value, int fd, int semid, int brak_kasy, int mutex, int count, 
 				trans = 100;
 				(*value)+=trans;
 				usleep(10000);
-				jd_sem_down(semid, brak_kasy);
-				jd_sem_down(semid, mutex);
+				jd_sem_down2(semid, mutex, brak_kasy);
 				usleep(30000);
 			}
 			close(fd);
@@ -180,7 +214,11 @@ void wplata(int* value, int fd, int semid, int brak_kasy, int mutex, int count, 
 		}
 	}
 }
-
+ 
+ /**
+ * tak samo jak poprzednia funkcja.
+ * jesli na koncie jest wystarczająca ilość środków proces jest usypiany na semaforze brak_kasy oraz mutex konta jest zwalniany.
+ */
 void wyplata(int* value, int fd, int semid, int brak_kasy, int mutex, int count, int count_i) {
 	int j, i, pid, trans;
 	for(j=0; j<count; j++) {
@@ -211,6 +249,14 @@ void wyplata(int* value, int fd, int semid, int brak_kasy, int mutex, int count,
 	}
 }
 
+
+/**
+ *
+ *
+ *
+ *
+ *
+ */
 void przelew(int* acc_form, int* acc_to, int fd, int semid, int brak_kasy_from, int brak_kasy_to, int count, int count_i) {
 	int j, i, pid, trans;
 	for(j=0; j<count; j++) {
@@ -270,12 +316,12 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	// create semaphores
+	// tworzenie semaforów - 4
 	semid = jd_sem_init(4);
 	sh->acc1_value = 1000;
 	sh->acc2_value = 1000;
 
-	// konto 1
+	// konto 1 
 	wplata(&(sh->acc1_value), fd, semid, BRAK_KASY_1, MUTEX_1, 2, 10);
 	wyplata(&(sh->acc1_value), fd, semid, BRAK_KASY_2, MUTEX_1, 2, 10);
 
@@ -287,11 +333,12 @@ int main(int argc, char* argv[]) {
 	przelew(&(sh->acc1_value), &(sh->acc2_value), fd, semid, BRAK_KASY_1, BRAK_KASY_2, 1, 5);
 	przelew(&(sh->acc2_value), &(sh->acc1_value), fd, semid, BRAK_KASY_2, BRAK_KASY_1, 1, 5);
 
+	// oczekiwanie na koniec
 	for(i=0; i<20*4+10; i++) {
 		pid = wait(&status);
-		printf("pid = %d\nstatus = %d\n", pid, WEXITSTATUS(status));
 	}
 
+	// wynik
 	printf("acc1: %d\nacc2: %d\n", sh->acc1_value, sh->acc2_value);
 
 	jd_sem_close(semid, 4);
