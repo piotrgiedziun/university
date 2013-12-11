@@ -10,9 +10,9 @@
 #define MESSAGE_LENGTH 512
 
 int main(int argc , char *argv[]) {
-    int s, port;
     fd_set readfds;
     struct sockaddr_in server;
+    int s, port, slen=sizeof(server);
     char user[50], ip[50], message[MESSAGE_LENGTH], server_message[MESSAGE_LENGTH];
 
     // read args
@@ -30,21 +30,19 @@ int main(int argc , char *argv[]) {
         strcpy(ip, argv[1]);
     }
 
-    s = socket(AF_INET , SOCK_STREAM , 0);
+    s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (s == -1) {
         perror("socket failed");
         return 1;
     }
      
+    memset((char *) &server, 0, sizeof(server));
     server.sin_addr.s_addr = inet_addr(ip);
     server.sin_family = AF_INET;
     server.sin_port = htons( port );
-    if (connect(s , (struct sockaddr *)&server , sizeof(server)) < 0) {
-        perror("connect failed");
-        return 1;
-    }
 
-    printf("connected to %s:%d\n", ip, port);
+    sendto(s, "init", MESSAGE_LENGTH, 0, (struct sockaddr *)&server, slen);
+
     while(1) {
         // select
         FD_ZERO(&readfds);
@@ -60,16 +58,17 @@ int main(int argc , char *argv[]) {
 
         if(FD_ISSET(0, &readfds)) {
             if( fgets(message, MESSAGE_LENGTH , stdin) != NULL ) {
-                if( send(s, message, strlen(message), 0) < 0) {
+                if( sendto(s, message, MESSAGE_LENGTH, 0, (struct sockaddr *)&server, (socklen_t) sizeof(server)) < 0) {
                     perror("send failed");
                     return 1;
                 }
                 bzero(message, MESSAGE_LENGTH);
+                printf("wyslano\n");
             }
         }
 
         if(FD_ISSET(s, &readfds)) {
-            if( recv(s, server_message, MESSAGE_LENGTH, 0) < 0) {
+            if( recvfrom(s,server_message,MESSAGE_LENGTH,0,NULL,NULL) < 0) {
                 perror("recv failed");
                 return 1;
             }

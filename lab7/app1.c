@@ -62,6 +62,7 @@ void *wplata( void *ptr ) {
 
         pthread_cond_signal(&cond_trans);
     }
+    return NULL;
 }
 
 void *wyplata( void *ptr ) {
@@ -108,6 +109,7 @@ void *wyplata( void *ptr ) {
         
         pthread_cond_signal(&cond_trans);
     }
+    return NULL;
 }
 
 void *przelew( void *ptr ) {
@@ -171,6 +173,7 @@ void *przelew( void *ptr ) {
         pthread_cond_signal(&cond_trans);
         pthread_cond_signal(&cond_trans);
     }
+    return NULL;
 }
 
 int main() {
