@@ -220,6 +220,7 @@ void przelew(int* acc_form, int* acc_to, int fd, int semid, int brak_kasy_from, 
 			exit(1);
 		case 0:
 			for(i=0; i<count_i; i++) {
+				usleep(10000);
 				while(1) {
 					jd_sem_up2(semid, MUTEX_1, MUTEX_2);
 					printf("przelew %d -> %d\n", *acc_form, *acc_to);
@@ -230,11 +231,12 @@ void przelew(int* acc_form, int* acc_to, int fd, int semid, int brak_kasy_from, 
 						jd_sem_down(semid, brak_kasy_to);
 						break;
 					}else{
+						printf("brak kasy\n");
 						jd_sem_lidl2(semid, MUTEX_1, MUTEX_2, brak_kasy_from);
 					}
 					usleep(10000);
 				}
-				jd_sem_down2(semid, MUTEX_1, MUTEX_2);
+				jd_sem_down2(semid, MUTEX_2, MUTEX_1);
 			}
 			close(fd);
 			exit(0);
@@ -270,6 +272,8 @@ int main(int argc, char* argv[]) {
 
 	// create semaphores
 	semid = jd_sem_init(4);
+	sh->acc1_value = 1000;
+	sh->acc2_value = 1000;
 
 	// konto 1
 	wplata(&(sh->acc1_value), fd, semid, BRAK_KASY_1, MUTEX_1, 2, 10);
@@ -283,9 +287,9 @@ int main(int argc, char* argv[]) {
 	przelew(&(sh->acc1_value), &(sh->acc2_value), fd, semid, BRAK_KASY_1, BRAK_KASY_2, 1, 5);
 	przelew(&(sh->acc2_value), &(sh->acc1_value), fd, semid, BRAK_KASY_2, BRAK_KASY_1, 1, 5);
 
-	for(i=0; i<200; i++) {
+	for(i=0; i<20*4+10; i++) {
 		pid = wait(&status);
-		//printf("pid = %d\nstatus = %d\n", pid, WEXITSTATUS(status));
+		printf("pid = %d\nstatus = %d\n", pid, WEXITSTATUS(status));
 	}
 
 	printf("acc1: %d\nacc2: %d\n", sh->acc1_value, sh->acc2_value);
