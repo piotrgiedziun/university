@@ -27,6 +27,9 @@
  * BRAK_KASY_2 - to samo na koncie 2
  * MUTEX_1 - operacja na konice 1
  * MUTEX_2 - operacja na konice 2
+ *
+ * oczekiwany wyniki programu - jednakowa ilość $ na kontach.
+ * symetryczna ilość operacji na kontach (1000/1000)
  */
 
 
@@ -50,7 +53,7 @@ void jd_sem_up(int semid, int id) {
 	sops.sem_num = id;
     sops.sem_op = -1;
     sops.sem_flg = 0;
-    if (semop(semid, &sops, 1) == -1) {
+    if (semop(semid, (struct sembuf *)&sops, 1) == -1) {
 	    perror("semop error");
 	    exit(1);
 	}
@@ -61,7 +64,7 @@ void jd_sem_down(int semid, int id) {
 	sops.sem_num = id;
     sops.sem_op = 1;
     sops.sem_flg = 0;
-    if (semop(semid, &sops, 1) == -1) {
+    if (semop(semid, (struct sembuf *)&sops, 1) == -1) {
 	    perror("semop error");
 	    exit(1);
 	}
@@ -73,7 +76,7 @@ void jd_sem_up2(int semid, int id1, int id2) {
 	sops[1].sem_num = id2;
     sops[0].sem_op = sops[1].sem_op = -1;
     sops[0].sem_flg = sops[1].sem_flg = 0;
-    if (semop(semid, &sops, 2) == -1) {
+    if (semop(semid, (struct sembuf *)&sops, 2) == -1) {
 	    perror("semop error");
 	    exit(1);
 	}
@@ -85,7 +88,7 @@ void jd_sem_down2(int semid, int id1, int id2) {
 	sops[1].sem_num = id2;
     sops[0].sem_op = sops[1].sem_op = 1;
     sops[0].sem_flg = sops[1].sem_flg = 0;
-    if (semop(semid, &sops, 2) == -1) {
+    if (semop(semid, (struct sembuf *)&sops, 2) == -1) {
 	    perror("semop error");
 	    exit(1);
 	}
@@ -107,7 +110,7 @@ void jd_sem_lidl2(int semid, int down1, int down2, int up) {
     sops[2].sem_op = -1;
     sops[2].sem_flg = 0;
 
-    if (semop(semid, &sops, 3) == -1) {
+    if (semop(semid, (struct sembuf *)&sops, 3) == -1) {
 	    perror("semop error");
 	    exit(1);
 	}
@@ -125,7 +128,7 @@ void jd_sem_lidl(int semid, int down, int up) {
     sops[1].sem_op = -1;
     sops[1].sem_flg = 0;
 
-    if (semop(semid, &sops, 2) == -1) {
+    if (semop(semid, (struct sembuf *)&sops, 2) == -1) {
 	    perror("semop error");
 	    exit(1);
 	}
@@ -251,11 +254,9 @@ void wyplata(int* value, int fd, int semid, int brak_kasy, int mutex, int count,
 
 
 /**
- *
- *
- *
- *
- *
+ * jd_sem_up2 zajmuje w jednej operacji mutex konta 1 i konta 2
+ * jeśli jest wystarczająca ilość $ wykonywany jest przelew, następnie odblokowanie brak_kasy_to (konta, na które zostały przelane $)
+ * w przeciwnym wypadku w jednej operacji następuje odblokowanie MUTEX_1 i MUTEX_2 oraz zajecie brak_kasy_from (oczekiwanie na $)
  */
 void przelew(int* acc_form, int* acc_to, int fd, int semid, int brak_kasy_from, int brak_kasy_to, int count, int count_i) {
 	int j, i, pid, trans;
