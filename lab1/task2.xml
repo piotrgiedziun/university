@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<university>
+	<name>Wrocław University of Technology</name>
+	<short_name>WrUT</short_name>
+	<city>Wrocław</city>
+	<description>None</description>
+
+	<faculties>
+		<faculty code="W1" name="Faculty 1">
+			<major>
+				<name>Major 1</name>
+				<establishment>2000</establishment>
+				<students>5000</students>
+			</major>
+			<major>
+				<name>Major 2</name>
+				<establishment>2013</establishment>
+				<students>2000</students>
+			</major>
+		</faculty>
+		<faculty code="W2" name="Faculty 2">
+			<major>
+				<name>Major 1</name>
+				<establishment>2014</establishment>
+				<students>200</students>
+			</major>
+		</faculty>	
+	</faculties>
+</university>

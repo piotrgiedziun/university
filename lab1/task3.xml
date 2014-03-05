@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE memories SYSTEM "task3.dtd">
+
+<memories>
+	<memory tapeid="note-1">
+		<media mediaid="note-1" />
+		<subdate>12/03/2014</subdate>
+		<donor>Piotr Giedziun</donor>
+		<subject>Sample subject</subject>
+		<location>
+			<place>place</place>
+			<description>description</description>
+		</location>
+	</memory>
+</memories>
