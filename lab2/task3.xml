@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+
+<!DOCTYPE company
+[
+<!ELEMENT company (employee*) >
+<!ELEMENT employee (name, surname, home_address, mobile*, job, salary, motto?) >
+<!ATTLIST employee employee_id ID #REQUIRED >
+<!ATTLIST employee manager_id IDREF #IMPLIED >
+<!ELEMENT name (#PCDATA) >
+<!ELEMENT surname (#PCDATA) >
+<!ELEMENT home_address (#PCDATA) >
+<!ELEMENT mobile (#PCDATA) >
+<!ATTLIST mobile mobile_type CDATA #IMPLIED >
+<!ELEMENT job (#PCDATA) >
+<!ELEMENT salary (#PCDATA) >
+<!ATTLIST salary currency CDATA #REQUIRED >
+<!ELEMENT motto (#PCDATA) >
+]>
+<?xml-stylesheet type="text/xsl" href="task3.xsl"?>
+
+<company>
+  <employee employee_id="emp-1">
+    <name>Piotr</name>
+    <surname>Giedziun</surname>
+    <home_address>Wrocław</home_address>
+    <mobile>+00 000-000-000</mobile>
+    <job>Developer</job>
+    <salary currency="PLN">5000</salary>
+  </employee>
+  <employee employee_id="emp-2">
+    <name>Mateusz</name>
+    <surname>Stahl</surname>
+    <home_address>Wrocław</home_address>
+    <mobile mobile_type="work">+00 000-000-000</mobile>
+    <mobile mobile_type="iPhone">+00 000-000-000</mobile>
+    <job>Penetration Tester</job>
+    <salary currency="PLN">20000</salary>
+  </employee>
+  <employee employee_id="emp-3" manager_id="emp-1">
+    <name>John</name>
+    <surname>Snow</surname>
+    <home_address>Winterfell</home_address>
+    <job>Steward</job>
+    <salary currency="GOLD">20000</salary>
+    <motto>Winter is Coming</motto>
+  </employee>
+</company>
