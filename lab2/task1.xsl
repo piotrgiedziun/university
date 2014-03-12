@@ -13,6 +13,7 @@
 				<th>Phone</th>
 				<th>Mobile</th>
 				<th>Job</th>
+				<th>Job payment</th>
 			</tr>
 			<xsl:for-each select="contact">
 				<tr>
@@ -22,6 +23,7 @@
 					<td><xsl:value-of select="phone"/></td>
 					<td><xsl:value-of select="mobile"/></td>
 					<td><xsl:value-of select="job"/></td>
+					<td><xsl:value-of select="job/@payment"/></td>
 				</tr>
 			</xsl:for-each>
 		</table>

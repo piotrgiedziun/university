@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="task1_2.xsl"?>
+<?xml-stylesheet type="text/xsl" href="task1.xsl"?>
 
 <contact>
     <name>Piotr</name>
@@ -7,5 +7,5 @@
     <home_address>Wrocław</home_address>
     <phone>000-00-00</phone>
     <mobile>+00 000-000-000</mobile>
-    <job>Student</job>
+    <job payment="200 PLN">Student</job>
 </contact>
