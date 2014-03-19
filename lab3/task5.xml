@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<courses xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="task5.xsd">
+	<course id="0">
+		<name>Information systems modelling</name>
+		<lecturer>Naruto Uzumaki</lecturer>
+	</course>
+	<course id="1">
+		<name>Advanced databases</name>
+		<lecturer>Roronoa Zoro</lecturer>
+	</course>
+	<course id="2">
+		<name>Information systems analysis</name>
+		<lecturer>Neji Hyuga</lecturer>
+	</course>
+	<course id="3">
+		<name>Social Communication</name>
+		<lecturer>Kakashi Hatake</lecturer>
+	</course>
+	<course id="4">
+		<name>Discrete mathematics</name>
+		<lecturer>Rock Lee</lecturer>
+	</course>
+</courses>

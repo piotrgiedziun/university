@@ -1,23 +1,8 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-<xs:complexType name="addressType">
-  <xs:sequence>
-     <xs:element name="city"/>
-     <xs:element name="street"/>
-  </xs:sequence>
-</xs:complexType>
-
-<xs:element name="university">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element name="name" maxOccurs="unbounded" type="languageElement"/>
-      <xs:element name="short_name" maxOccurs="unbounded" type="languageElement"/>
-      <xs:element name="city" maxOccurs="unbounded" type="languageElement"/>
-      <xs:element name="description" maxOccurs="unbounded" type="languageElement"/>
-      <xs:element name="faculties">
-        <xs:complexType>
-          <xs:sequence>
+<xs:complexType name="facultiesType">
+	<xs:sequence>
             <xs:element name="faculty" maxOccurs="unbounded">
               <xs:complexType>
                 <xs:sequence>
@@ -38,19 +23,7 @@
                 <xs:attribute name="code" type="xs:string" use="required"/>
               </xs:complexType>
             </xs:element> 
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element> 
     </xs:sequence>
-  </xs:complexType>
-</xs:element>
-
-<xs:complexType name="languageElement">
-  <xs:simpleContent>
-    <xs:extension base="xs:string">
-      <xs:attribute name="lang" type="xs:string" default="en"/>
-    </xs:extension>
-  </xs:simpleContent>
 </xs:complexType>
 
 </xs:schema>

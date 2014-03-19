@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="courses">
+  <xs:complexType>
+    <xs:sequence>
+    	<xs:element name="course" maxOccurs="unbounded">
+    		<xs:complexType>
+    			<xs:sequence>
+      				<xs:element name="name">
+					  <xs:simpleType>
+					    <xs:restriction base="xs:string">
+					      <xs:enumeration value="Information systems modelling"/>
+					      <xs:enumeration value="Advanced databases"/>
+					      <xs:enumeration value="Information systems analysis"/>
+					      <xs:enumeration value="Social Communication"/>
+					      <xs:enumeration value="Discrete mathematics"/>
+					    </xs:restriction>
+					  </xs:simpleType>
+					</xs:element>
+					<xs:element name="lecturer" type="xs:string" />
+      			</xs:sequence>
+      			<xs:attribute name="id" type="idType" use="required"/>
+      		</xs:complexType>
+      	</xs:element>
+    </xs:sequence> 
+  </xs:complexType> 
+</xs:element>
+
+<xs:simpleType name="idType">
+<xs:restriction base="xs:nonNegativeInteger">
+  <xs:minInclusive value="0"/>
+  <xs:maxInclusive value="1200"/>
+</xs:restriction>
+</xs:simpleType>
+
+</xs:schema>

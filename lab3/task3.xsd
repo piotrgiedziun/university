@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:complexType name="physicalelementType">
+	<xs:sequence>
+   		<xs:element name="access" type="accessType" minOccurs="0" maxOccurs="unbounded" />
+	</xs:sequence>
+	<xs:attribute name="id" type="xs:integer" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="mobiledeviceType">
+	<xs:complexContent>
+		<xs:extension base="physicalelementType">
+			<xs:element ref="access"/>
+			<xs:element name="interface" type="L1interface"  maxOccurs="unbounded"/>
+			<xs:element name="os" type="osReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="sw" type="swReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:extension>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="accessType">
+	<xs:complexContent>
+		<xs:attribute name="id" type="xs:integer" use="required"/>
+		<xs:attribute name="type" type="xs:string" use="required"/>
+		<xs:attribute name="value" type="xs:string" use="optional"/>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="L1interface">
+	<xs:complexContent>
+		<xs:attribute name="id" type="xs:integer" use="required"/>
+		<xs:attribute name="number" type="xs:integer" use="v"/>
+		<xs:attribute name="technology" type="xs:string" use="optional"/>
+		<xs:attribute name="connector" type="xs:string" use="optional"/>
+		<xs:attribute name="protocol" type="xs:string" use="optional"/>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="osReferenceType">
+	<xs:complexContent>
+		<xs:sequence>
+			<xs:element name="config" type="configurationType"/>
+		</xs:sequence>
+		<xs:attribute name="idRef" type="xs:integer" use="required"/>
+		<xs:attribute name="running" type="xs:string" use="optional"/>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="configurationType">
+	<xs:complexContent>
+		<xs:attribute name="location" type="xs:string" use="optional"/>
+	</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="swReferenceType">
+	<xs:complexContent>
+		<xs:sequence>
+			<xs:element name="config" type="configurationType"/>
+		</xs:sequence>
+		<xs:attribute name="idRef" type="xs:integer" use="required"/>
+		<xs:attribute name="running" type="xs:string" use="optional"/>
+	</xs:complexContent>
+</xs:complexType>
+
+</xs:schema>
