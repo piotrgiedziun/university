@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<university xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="task2.xsd">
+	<name lang="en">Wrocław University of Technology</name>
+	<name lang="pl">Politechnika Wrocławska</name>
+	<short_name lang="en">WrUT</short_name>
+	<short_name lang="pl">PWr</short_name>
+	<city>Wrocław</city>
+	<description lang="en">None</description>
+	<description lang="pl">Brak</description>
+
+	<faculties>
+		<faculty code="W-1">
+			<name lang="en">Faculty 1</name>
+			<name lang="pl">Kierunek 1</name>
+			<address>
+				<city>Wrocław</city>
+				<street>ul. Janiszewskiego 1</street>
+			</address>
+			<description lang="en">Sample description</description>
+			<description lang="pl">Przykładowy opis</description>
+			<major code="W1/1">
+				<name lang="en">Major 1</name>
+				<name lang="pl">Kierunek 1</name>
+				<establishment>2000</establishment>
+				<students>5000</students>
+			</major>
+			<major code="W1/2">
+				<name lang="en">Major 2</name>
+				<establishment>2013</establishment>
+				<students>2000</students>
+			</major>
+		</faculty>
+		<faculty code="W-2">
+			<name lang="en">Faculty 2</name>
+			<address>
+				<city>Wrocław</city>
+				<street>ul. Janiszewskiego 2</street>
+			</address>
+			<description lang="en">Sample description</description>
+			<major code="W2/1">
+				<name lang="en">Major 1</name>
+				<establishment>2014</establishment>
+				<students>200</students>
+			</major>
+		</faculty>	
+	</faculties>
+</university>
