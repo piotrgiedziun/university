@@ -18,7 +18,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class Task3 {
 	
@@ -39,9 +38,6 @@ public class Task3 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 	 
 		String line = null;
-		
-		// omit first line
-		br.readLine();
 		
 		while ((line = br.readLine()) != null) {
 			list.add(line.split(","));
@@ -72,26 +68,30 @@ public class Task3 {
             Element rootElement = doc.createElement("employees");
             doc.appendChild(rootElement);
             
+            // get title line
+            String[] titles = lines.get(0);
+            		
     		// loop through lines
-    		for(String[] row : lines) {
+    		for(int i=1; i<lines.size(); i++) {
+    			String[] row = lines.get(i);
+    			
                 Element employee = doc.createElement("employee");
-                addElemetWithText(doc, employee, "name", row[0]);
-                addElemetWithText(doc, employee, "dateOfBirth", row[1]);
-                addElemetWithText(doc, employee, "dept", row[2]);
-                addElemetWithText(doc, employee, "jobTitle", row[3]);
+                for(int j=0; j<titles.length; j++) {
+                	addElemetWithText(doc, employee, titles[j], row[j]);
+                }
 
                 doc.getFirstChild().appendChild(employee);
     		}
             
-            //write to console or file
-            StreamResult console = new StreamResult(System.out);
+            //write to file
+    		StreamResult file = new StreamResult(new File("task3.xml"));
  
             //write data
             TransformerFactory transformerFactory = TransformerFactory.newInstance();  
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             DOMSource source = new DOMSource(doc); 
-            transformer.transform(source, console);
+            transformer.transform(source, file);
         } catch (Exception e) {
             e.printStackTrace();
         }

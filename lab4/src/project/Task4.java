@@ -1,19 +1,13 @@
 package project;
 
-import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,44 +16,20 @@ import org.w3c.dom.NodeList;
 
 public class Task4 {
 	
-	private static void addElemetWithText(Document doc, Element root, String name, String value) {
-		Element elm = doc.createElement(name);
-		elm.appendChild(doc.createTextNode(value));
-        root.appendChild(elm);
+	private static String arrayToString(String[] input) {
+		StringBuilder sb = new StringBuilder();
+		for (String n : input) { 
+		    if (sb.length() > 0) sb.append(',');
+		    sb.append(n);
+		}
+		return sb.toString();
 	}
 	
 	private static Node getNodeByTagName(Node root, String name) {
-         return (Node) ((Element) root).getElementsByTagName(name).item(0).getChildNodes().item(0);
-	}
-	
-	private static ArrayList<String[]> filetoLines(File fin) throws IOException {
-		FileInputStream fis = new FileInputStream(fin);
-		ArrayList<String[]> list = new ArrayList<String[]>();
-	 
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-	 
-		String line = null;
-		
-		// omit first line
-		br.readLine();
-		
-		while ((line = br.readLine()) != null) {
-			list.add(line.split(","));
-		}
-	 
-		br.close();
-		return list;
+        return (Node) ((Element) root).getElementsByTagName(name).item(0).getChildNodes().item(0);
 	}
 	
 	public static void build() {
-		ArrayList<String[]> lines = new ArrayList<String[]>();
-		try {
-			lines = filetoLines(new File("task3.txt"));
-		} catch (IOException e) {
-			System.err.println("File not found.");
-		}
-		
-		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         dbFactory.setIgnoringComments(true);
         dbFactory.setValidating(false);
@@ -67,31 +37,40 @@ public class Task4 {
         
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.newDocument();
+            File f = new File("task3.xml");
+            Document doc = dBuilder.parse(f);
             
-            Element rootElement = doc.createElement("employees");
-            doc.appendChild(rootElement);
+            // get elements
+            NodeList employeesList = doc.getElementsByTagName("employee");
             
-    		// loop through lines
-    		for(String[] row : lines) {
-                Element employee = doc.createElement("employee");
-                addElemetWithText(doc, employee, "name", row[0]);
-                addElemetWithText(doc, employee, "dateOfBirth", row[1]);
-                addElemetWithText(doc, employee, "dept", row[2]);
-                addElemetWithText(doc, employee, "jobTitle", row[3]);
+            ArrayList<String[]> lines = new ArrayList<String[]>();
+            lines.add(new String[] {"name","dateOfBirth","dept","jobTitle"});
+            for(int i=0; i<employeesList.getLength(); i++) {
+            	String[] row = {
+            			getNodeByTagName(employeesList.item(i), "name").getNodeValue(),
+            			getNodeByTagName(employeesList.item(i), "dateOfBirth").getNodeValue(),
+            			getNodeByTagName(employeesList.item(i), "dept").getNodeValue(),
+            			getNodeByTagName(employeesList.item(i), "jobTitle").getNodeValue(),
+            			};
+            	lines.add(row);
+            }
 
-                doc.getFirstChild().appendChild(employee);
-    		}
-            
-            //write to console or file
-            StreamResult console = new StreamResult(System.out);
- 
-            //write data
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();  
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            DOMSource source = new DOMSource(doc); 
-            transformer.transform(source, console);
+            // write to file
+            try {
+    			File of = new File("task4.txt");
+                BufferedWriter bw = new BufferedWriter(new FileWriter(of, false));
+                for (Iterator<String[]> it = lines.iterator(); it.hasNext(); ) {
+                    String[] row = it.next();
+                    bw.write(arrayToString(row));
+                    if (it.hasNext()) {
+                    	bw.newLine();
+                    }
+                }
+                bw.close();
+    	    } catch (Exception e) {
+    	    	System.err.println("Unable to save task4.txt file.");
+    	    }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

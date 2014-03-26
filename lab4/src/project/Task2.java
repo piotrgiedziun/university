@@ -39,7 +39,7 @@ public class Task2 {
             File f = new File("book.xml");
             Document doc = dBuilder.parse(f);
             
-            // get root element
+            // get elements
             NodeList booksList = doc.getElementsByTagName("book");
 
             // change elm0 price
