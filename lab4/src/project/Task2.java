@@ -83,6 +83,7 @@ public class Task2 {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();  
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
             DOMSource source = new DOMSource(doc); 
             transformer.transform(source, console);
         } catch (Exception e) {
