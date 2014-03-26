@@ -33,7 +33,12 @@ public class Task1 {
             course.setAttribute("Author","Piotr Giedziun"); 
             
             Element topic = doc.createElement("Topic");  
-            course.appendChild(topic);  
+            course.appendChild(topic);
+            
+            Element person = doc.createElement("Person");  
+            person.setAttribute("Name","Piotr Giedziun"); 
+            person.setAttribute("Age","23"); 
+            course.appendChild(person);
  
             //write to file
             StreamResult file = new StreamResult(new File("task1.xml"));
@@ -42,6 +47,7 @@ public class Task1 {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();  
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
             DOMSource source = new DOMSource(doc); 
             transformer.transform(source, file);
         } catch (Exception e) {

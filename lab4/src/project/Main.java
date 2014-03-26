@@ -28,6 +28,7 @@ public class Main {
 					Task4.build();
 					break;
 				case 5:
+					Task5.build();
 					break;
 				default:
 					System.err.println("Invalid option.");

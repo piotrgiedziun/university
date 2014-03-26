@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <ComputerEngineering>
-<Cource Author="Piotr Giedziun" Name="Application programming - Java and XML technologies">
-<Topic/>
-</Cource>
+   <Cource Author="Piotr Giedziun" Name="Application programming - Java and XML technologies">
+      <Topic/>
+      <Person Age="23" Name="Piotr Giedziun"/>
+   </Cource>
 </ComputerEngineering>

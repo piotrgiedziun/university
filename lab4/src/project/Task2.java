@@ -13,7 +13,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.Attr;  
 import org.w3c.dom.NodeList;
 
 public class Task2 {
@@ -26,6 +25,14 @@ public class Task2 {
 	
 	private static Node getNodeByTagName(Node root, String name) {
          return (Node) ((Element) root).getElementsByTagName(name).item(0).getChildNodes().item(0);
+	}
+	
+	private static Node findElementById(NodeList list, String id) {
+       for(int i=0; i<list.getLength(); i++) {
+    	   if(list.item(i).getAttributes().getNamedItem("id").getNodeValue().equals(id))
+    		   return list.item(i);
+       }
+       return null;
 	}
 	
 	public static void build() {
@@ -51,6 +58,10 @@ public class Task2 {
             // delete last row
             int last_row = booksList.getLength()-1;
             doc.getFirstChild().removeChild(booksList.item(last_row));
+
+            // remove book by id
+            Node bookToRemove = findElementById(booksList, "bk102");
+            doc.getFirstChild().removeChild(bookToRemove);
             
             // add new book
             Element book = doc.createElement("book");
