@@ -1,0 +1,18 @@
+<collection>
+<recipe id="r117"> 
+   <title>Rhubarb Cobbler</title> 
+   <ingredient name="diced rhubarb" amount="2.5" unit="cup"/>     
+   <ingredient name="sugar" amount="2" unit="tablespoon"/> 
+   <ingredient name="fairly ripe banana" amount="2"/> 
+   <ingredient name="cinnamon" amount="0.25" unit="teaspoon"/> 
+   <ingredient name="nutmeg" amount="1" unit="dash"/>
+   <preparation> 
+      <step>Combine all and use as cobbler, pie, or crisp. </step>
+   </preparation>
+   <comment> 
+     Rhubarb Cobbler made with bananas 
+     as the main sweetener. It was delicious.
+   </comment>
+  <nutrition calories="170" fat="28%" carbohydrates="58%" protein="14%"/>
+  <related ref="42">Garden Quiche is also yummy</related> </recipe>
+</collection>
