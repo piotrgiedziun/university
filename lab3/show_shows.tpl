@@ -12,7 +12,7 @@
 	<td>{{ row['show_id'] }}</td>
 	<td>{{ row['title'] }}</td>
 	<td>{{ row['start_date'] }}</td>
-	<td><a href="#">Buy tickets</a></td>
+	<td><a href="/tickets/{{ row['show_id'] }}">Buy tickets</a></td>
 </tr>
 %end
 </table>

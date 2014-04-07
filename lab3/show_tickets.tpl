@@ -1,14 +1,15 @@
 <p>List of cinemas:</p>
 
 <table border="1">
-<tr>
-	<td>#</td>
-</tr>
 %for line in tickets:
 <tr>
-	{{ line }}
 	%for elm in line:
-		<td>{{ elm['seat_id'] }} {{ elm['row'] }} {{ elm['col'] }}</td>
+		%if elm['ticket_id'] == None:
+		<td style="background-color:green;">free</td>
+		%else:
+		<td style="background-color:red;">taken</td>
+		%end
+
 	%end
 </tr>
 %end

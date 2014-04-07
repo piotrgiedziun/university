@@ -23,8 +23,9 @@ cur.execute("SET FOREIGN_KEY_CHECKS = 1;");
 cur.execute("INSERT INTO `cinema` (name, address) VALUES ('cinema', 'wroclaw');")
 
 seat_id = 0
-for theater_id in range(1, 500):
-	is_3D = random.randint(0,1)
+for theater_id in range(1, 1000):
+	#is_3D = random.randint(0,1)
+	is_3D = 1
 	query = "INSERT INTO `theater` (theater_id, name, is_3D, cinema_cinema_id) VALUES ('%d', 'theater%d', '%d', '1');" % (theater_id, theater_id, is_3D,)
 	print query
 	cur.execute(query)
@@ -39,10 +40,10 @@ for theater_id in range(1, 500):
 			cur.execute(query)
 
 	# create shows
-	now = dt.now()
+	now = dt.now() + timedelta(days=1)
 	for show_id in range(0, 1):
 		film_id = random.randint(1,999)
-		now += timedelta(minutes=3*60);
+		now += timedelta(minutes=185);
 		query = "INSERT INTO `show` (start_date, theater_theater_id, film_film_id) VALUES ('%s', %d, %d);" % (now.strftime(DATE_FORMAT), theater_real_id, film_id)
 		print ">", query
 		cur.execute(query)
@@ -54,7 +55,7 @@ for theater_id in range(1, 500):
 				price = random.randint(18,25)
 				# get seat_id
 				seat_id += 1
-				query = "INSERT INTO `ticket` (price, seat_seat_id, show_show_id) VALUES (%d, %d, %d);" % (price, seat_id, show_real_id)
+				query = "INSERT INTO `ticket` (price, seat_seat_id, show_show_id, cinema_cinema_id, theater_id) VALUES (%d, %d, %d, 1, %d);" % (price, seat_id, show_real_id, theater_real_id)
 				print ">", query
 				cur.execute(query)
 

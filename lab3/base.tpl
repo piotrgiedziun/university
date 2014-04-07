@@ -6,7 +6,9 @@
 	<a href="/">Index</a> | 
 	<a href="/movies">Movie list</a> | 
 	<a href="/cinemas">Cinemas list</a>
-	</hr>
+	<hr />
 	%include
+	<hr />
+	<a href="/task1">Task1</a>
 </body>
 </html>
