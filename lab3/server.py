@@ -66,6 +66,22 @@ def task1(db):
 	rows = db.fetchall()
 	return template('<pre style="white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">{{html}}</pre>', html=json.dumps(rows))
 
+@app.route('/task2')
+def task2(db):
+	db.execute("""SELECT 
+	    ti . *, sh.start_date
+	FROM
+	    `ticket` ti
+	        INNER JOIN
+	    `show` sh ON ti.show_show_id = sh.show_id
+	WHERE
+	    start_date > now()
+	        AND start_date < DATE_ADD(now(), INTERVAL 1 YEAR);""")
+	rows = db.fetchall()
+
+	return template('<strong>{{text}}</strong>', text='done!')
+
+
 @app.route('/')
 def index(db):
 	return template('index')

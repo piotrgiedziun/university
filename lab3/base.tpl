@@ -9,6 +9,7 @@
 	<hr />
 	%include
 	<hr />
-	<a href="/task1">Task1</a>
+	<a href="/task1">Task1</a> | 
+	<a href="/task2">Task2</a>
 </body>
 </html>

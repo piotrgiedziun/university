@@ -16,7 +16,7 @@ LAB 3
 - using infor form task (1) try to find a way to reduce the avg time per query
 	> using indexes improve performance
 
-- repeat the prcedure for a query that finds the number of tickets sold in a time interval of 1 year (DATE_ADD)
+- repeat the procedure for a query that finds the number of tickets sold in a time interval of 1 year (DATE_ADD)
 	>   SELECT 
 		    ti . *, sh.start_date
 		FROM
@@ -30,3 +30,9 @@ LAB 3
 - performance of indexes for strings find tickets sold for movies
 	- starting with "the" -> "the%"
 	- having the word "the" -> "%the%" 
+
+REPORT:
+	- in LATEX
+	- with graphs (time per query/table size)
+	- that shows the beneffits obtained by adding indexes in the case examined during the labs.
+	- run the benchmarks for different size od tables (different index cardinalities) e.g. for tickets with 1k, 10k, 100k, 1000k rows
