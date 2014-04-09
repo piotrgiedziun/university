@@ -1,0 +1,1 @@
+xjc -p project lab5_task1.xsd -d src
