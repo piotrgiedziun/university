@@ -1,0 +1,1 @@
+xjc -p project -d src task3.xsd
