@@ -155,6 +155,12 @@ public class Catalog {
         	return book.id.equals(this.id);
         }
 
+        @Override
+        public String toString() {
+        	return String.format("\t(%s) %s by %s [price=%f,publishDate=%s]", 
+					this.getId(), this.getTitle(), this.getAuthor(), this.getPrice(), this.getPublishDate());
+        }
+        
         /**
          * Gets the value of the author property.
          * 
