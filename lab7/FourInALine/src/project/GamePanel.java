@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements GameListener {
 
 		game = new Game();
 		game.addListener(this);
-		game.addTimer(new Timer(200, game));
+		game.addTimer(new Timer(130, game));
 
 		addKeyListener(new TGameKeyAdapter(game));
 		setFocusable(true);
@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements GameListener {
 				logLabel.setText("");
 				game = GameManager.load();
 				game.addListener(GamePanel.this);
-				game.addTimer(new Timer(200, game));
+				game.addTimer(new Timer(130, game));
 				addKeyListener(new TGameKeyAdapter(game));
 				repaint();
 				requestFocusInWindow();
