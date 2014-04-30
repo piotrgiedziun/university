@@ -164,6 +164,7 @@ public class Game implements ActionListener {
 			}else if( gameListener != null ) {
 				gameListener.logMessage(current_player_id == 0 ? "Player #1 WON!" : "Player #2 WON!");
 			}
+			actionFinished(gg);
 		}
 		interfaceChnaged();
 	}
@@ -191,6 +192,12 @@ public class Game implements ActionListener {
 	private void interfaceChnaged() {
 		if( gameListener != null ) {
 			gameListener.repaintGame();
+		}
+	}
+	
+	private void actionFinished(boolean game_over) {
+		if( gameListener != null ) {
+			gameListener.actionFinished(game_over);
 		}
 	}
 

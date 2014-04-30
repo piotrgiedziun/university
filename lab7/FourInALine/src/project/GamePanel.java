@@ -1,6 +1,7 @@
 package project;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -12,9 +13,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GamePanel extends JPanel implements GameListener {
 
@@ -43,27 +46,49 @@ public class GamePanel extends JPanel implements GameListener {
 				requestFocusInWindow();
 			}
 		});
+		
+		final Component instance = this;
 
-		JButton saveGame = new JButton("Save");
+		JButton saveGame = new JButton("Save as");
 		saveGame.setBounds(100, (game.COLS + 1) * 60 + 20, 100, 30);
 		saveGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				GameManager.save(game);
-				requestFocusInWindow();
+				JFileChooser chooser = new JFileChooser();
+			    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+			        "Game Save file", "xml");
+			    chooser.setFileFilter(filter);
+			    int returnVal = chooser.showOpenDialog(instance);
+			    
+			    if(returnVal == JFileChooser.APPROVE_OPTION) {
+			       System.out.println("You chose to open this file: " +
+			            chooser.getSelectedFile().getName());
+			       GameManager.save(game, chooser.getSelectedFile().getName());
+			       requestFocusInWindow();
+			    }
 			}
 		});
 
-		JButton loadGame = new JButton("Load");
+		JButton loadGame = new JButton("Load from");
 		loadGame.setBounds(195, (game.COLS + 1) * 60 + 20, 100, 30);
 		loadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				logLabel.setText("");
-				game = GameManager.load();
-				game.addListener(GamePanel.this);
-				game.addTimer(new Timer(130, game));
-				addKeyListener(new TGameKeyAdapter(game));
-				repaint();
-				requestFocusInWindow();
+				
+				JFileChooser chooser = new JFileChooser();
+			    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+			        "Game Save file", "xml");
+			    chooser.setFileFilter(filter);
+			    
+			    int returnVal = chooser.showOpenDialog(instance);
+			    
+			    if(returnVal == JFileChooser.APPROVE_OPTION) {
+			    	game = GameManager.load(chooser.getSelectedFile().getName());
+					game.addListener(GamePanel.this);
+					game.addTimer(new Timer(130, game));
+					addKeyListener(new TGameKeyAdapter(game));
+					repaint();
+					requestFocusInWindow();
+			    }
 			}
 		});
 
@@ -113,6 +138,12 @@ public class GamePanel extends JPanel implements GameListener {
 	@Override
 	public void repaintGame() {
 		repaint();
+	}
+	
+	@Override
+	public void actionFinished(boolean game_over) {
+		System.out.println("auto saved");
+		GameManager.autoSave(game);
 	}
 
 	@Override

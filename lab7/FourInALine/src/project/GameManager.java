@@ -11,12 +11,17 @@ import javax.xml.bind.Unmarshaller;
 
 public class GameManager {
 	
-	private static final String GAME_STATE_FILE = "game_state.xml";
+	private static String file_name = "game_state.xml";
 	
-	public static void save(Game game) {
+	public static void autoSave(Game game) {
+		save(game, file_name);
+	}
+	
+	public static void save(Game game, String file_name) {
+		GameManager.file_name = file_name;
 		try {
 
-			File file = new File(GAME_STATE_FILE);
+			File file = new File(file_name);
 			JAXBContext jaxbContext = JAXBContext.newInstance(Game.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -30,12 +35,13 @@ public class GameManager {
 
 	}
 	
-	public static Game load() {
+	public static Game load(String file_name) {
+		GameManager.file_name = file_name;
 		try {
 			JAXBContext context = JAXBContext.newInstance(Game.class);
 		    Marshaller m = context.createMarshaller();
 			Unmarshaller um = context.createUnmarshaller();
-			Game game = (Game) um.unmarshal(new FileReader(GAME_STATE_FILE));
+			Game game = (Game) um.unmarshal(new FileReader(file_name));
 			
 			return game;
 			
