@@ -29,7 +29,26 @@ LAB 3
 
 - performance of indexes for strings find tickets sold for movies
 	- starting with "the" -> "the%"
+		>	SELECT 
+				SQL_NO_CACHE fi.title
+			FROM
+			    `ticket` ti
+			        INNER JOIN
+			    `show` sh ON sh.show_id = ti.show_show_id
+					LEFT JOIN
+			    `film` fi ON fi.film_id = sh.film_film_id
+			WHERE fi.title LIKE 'the%'
+
 	- having the word "the" -> "%the%" 
+		>	SELECT 
+				SQL_NO_CACHE fi.title
+			FROM
+			    `ticket` ti
+			        INNER JOIN
+			    `show` sh ON sh.show_id = ti.show_show_id
+					LEFT JOIN
+			    `film` fi ON fi.film_id = sh.film_film_id
+			WHERE fi.title LIKE '%the%'
 
 REPORT:
 	- in LATEX
