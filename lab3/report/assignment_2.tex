@@ -407,7 +407,22 @@ WHERE fi.title LIKE '%the%'
 In my case film database in negligible compared to ticket size. This fact have big impact on result graph.
 There is no major difference for table with 100 rows with/without indexes.\newline
 In this case results were impacted by ticket table size (amount of inner joins).\newline
+The main difference is that "the\%" is using indexing, unlike "\%the\%".
 \newline\newline
+Better example of this difference is expressed by following query.
+\begin{lstlisting}[language=SQL] 
+EXPLAIN SELECT * FROM sakila.film WHERE title LIKE "the%";
+id,select_type,table,type,possible_keys,key,key_len,ref,rows,Extra
+1,SIMPLE,film,range,idx_title,idx_title,767,NULL,1,"Using index condition"
+\end{lstlisting}
+It's using index condition instead of WHERE.
+\begin{lstlisting}[language=SQL] 
+EXPLAIN SELECT * FROM sakila.film WHERE title LIKE "%the%";
+id,select_type,table,type,possible_keys,key,key_len,ref,rows,Extra
+1,SIMPLE,film,ALL,NULL,NULL,NULL,NULL,1000,"Using where"
+\end{lstlisting}
+In this case we are looping through entire table data.
+\newpage
 Results presented as line chart.
 
 \begin{figure}[ht!]
@@ -425,6 +440,15 @@ Results presented as line chart.
 \end{figure}
 
 \end{homeworkProblem}
+
+\section{Summary}
+
+\begin{itemize}
+  \item All indexes in our tasks (data types - INT, VARCHAR, DATA) were stored in B-trees.
+  \item For those task, where number of searches records were about 10k+ there were huge performance improvement for those with index.
+  \item It's always good practice to use indexes while creating database model.
+  \item Indexes should be created on fields used in WHERE clause, finding  MIN/MAX and sorting.
+\end{itemize}
 
 \section{Webpage}
 Part of laboratory preparation was to create website to handle requests. Prepared site is able to display movies list, cinemas list, view upcoming show and book seats.
@@ -446,15 +470,5 @@ Part of laboratory preparation was to create website to handle requests. Prepare
 \includegraphics[width=0.60\columnwidth]{www_ss3} 
 \caption{Seats for selected show}
 \end{figure}
-
-\section{Summary}
-
-\begin{itemize}
-  \item All indexes in our tasks (data types - INT, VARCHAR, DATA) were stored in B-trees.
-  \item For those task, where number of searches records were about 10k+ there were huge performance improvement for those with index.
-  \item It's always good practice to use indexes while creating database model.
-  \item Indexes should be created on fields used in WHERE clause, finding  MIN/MAX and sorting.
-\end{itemize}
-%----------------------------------------------------------------------------------------
 
 \end{document}
