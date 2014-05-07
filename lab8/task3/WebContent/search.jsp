@@ -29,15 +29,13 @@
   <body>
   
   <div class="container">
-
-    <h1>Hello ${requestScope['user'].getUsername()}!</h1>
-    
-    <strong>Current account balance is ${requestScope['user'].getAccount_balance()}</strong>
-	<br/><br/>
-	<form action="SearchController" method="get">
-		<input type="text" name="name" placeholder="Search" autofocus>
-        <button class="btn btn-primary" type="submit">Search</button>
-	</form>
+	Searching for ${requestScope['name']}.
+	
+	<ul>
+		<c:forEach var = "var" varStatus="status" items="${requestScope.users}">
+ 		 <li>${requestScope.users[status.count - 1]}</li>
+		</c:forEach>
+	</ul>
 
     </div>
 
