@@ -2,28 +2,8 @@
 <game>
     <coins>
         <coin>
-            <x>0</x>
-            <y>7</y>
-            <player_id>0</player_id>
-        </coin>
-        <coin>
-            <x>0</x>
-            <y>6</y>
-            <player_id>1</player_id>
-        </coin>
-        <coin>
             <x>1</x>
             <y>7</y>
-            <player_id>0</player_id>
-        </coin>
-        <coin>
-            <x>1</x>
-            <y>6</y>
-            <player_id>1</player_id>
-        </coin>
-        <coin>
-            <x>1</x>
-            <y>5</y>
             <player_id>0</player_id>
         </coin>
     </coins>
