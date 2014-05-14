@@ -9,10 +9,18 @@ public class Host {
 	
 	private String name;
 	private String ip;
+	private String user;
 
 	public Host(String name, String ip) {
 		this.name = name;
 		this.ip = ip;
+		user = null;
+	}
+	
+	public Host(String name, String ip, String user) {
+		this.name = name;
+		this.ip = ip;
+		this.user = user;
 	}
 
 	public String getName(){ return(name); }
@@ -30,6 +38,14 @@ public class Host {
 		
 		Host host = (Host) obj;
 		return host.ip.equals(ip) && host.ip.equals(ip);
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 }

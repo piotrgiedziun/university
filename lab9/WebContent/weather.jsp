@@ -13,6 +13,7 @@
 
     <!-- Bootstrap -->
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,25 +30,36 @@
 	.container {
 		width: 500px;
 	}
+	#map-canvas {
+        height: 200px;
+        margin: 0px;
+        padding: 0px
+      }
 	</style>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
   </head>
   <body>
   
   	<div class="container">
 
-		<c:import var="weatherInfo" url="http://weather.yahooapis.com/forecastrss?w=2502265"/>
+		<c:import var="weatherInfo" url="http://weather.yahooapis.com/forecastrss?w=${param.id}"/>
 		<x:parse xml="${weatherInfo}" var="output"/>
-		
 		<div class="row" style="margin-top:30px;">
 			<div class="col-md-12">
 				<h3>Weather</h3>
+				<form method="GET">
+				<select name="id" onchange="this.form.submit();">
+				  <option value="2502265" <% if(request.getParameter("id").equals("2502265")) { %>selected<% } %>>San Jose</option>
+				  <option value="526363" <% if(request.getParameter("id").equals("526363")) { %>selected<% } %>>Wroclaw</option>
+				</select>
+				</form>
 			</div>
 		</div>
 		
-		<div class="row">
-		  <div class="col-md-4">City</div>
-		  <div class="col-md-4">Country</div>
-		  <div class="col-md-4">Region</div>
+		<div class="row" style="margin-top:30px;">
+		  <div class="col-md-4">City:</div>
+		  <div class="col-md-4">Country:</div>
+		  <div class="col-md-4">Region:</div>
 		</div>
 		
 		<div class="row">
@@ -66,12 +78,15 @@
 		</div>
 		
 		<div class="row" style="margin-top:30px;">
-			<div class="col-md-12">
+			<div class="col-md-6">
 				<h3>Forecast (5 days)</h3>
-				<c:forEach begin="1" end="6" var="val">
+				<c:forEach begin="1" end="5" var="val">
 				    <x:out select="$output/rss/channel/item/*[local-name()='forecast'][$val]/@date" /> h:<x:out select="$output/rss/channel/item/*[local-name()='forecast'][$val]/@high" /> <x:out select="$output/rss/channel/*[local-name()='units']/@temperature" />   l:<x:out select="$output/rss/channel/item/*[local-name()='forecast'][$val]/@low" /> <x:out select="$output/rss/channel/*[local-name()='units']/@temperature" /> <br/>
 				</c:forEach>
+			</div>
 			
+			<div class="col-md-6">
+				<div id="map-canvas"></div>
 			</div>
 		</div>
     
@@ -81,5 +96,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    
+    <script>
+	    google.maps.event.addDomListener(window, 'load', function() {
+	    	console.log("showed");
+	    	var mapOptions = {
+	    			    zoom: 12,
+	    			    center: new google.maps.LatLng(<x:out select="$output/rss/channel/item/*[local-name()='lat']" />, <x:out select="$output/rss/channel/item/*[local-name()='long']" />)
+	    			  }
+	    	var map = new google.maps.Map(document.getElementById('map-canvas'),
+	    			                                mapOptions);
+	    });
+    </script>
   </body>
 </html>

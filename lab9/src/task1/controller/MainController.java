@@ -17,7 +17,10 @@ import task1.model.Host;
 public class MainController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    	Host.hosts.clear();
+    	Host.hosts.add(new Host("localhost", "127.0.0.1", "Piotr"));
+    	Host.hosts.add(new Host("google.com", "173.194.65.139", "Bob"));
+    	
     	Host host = new Host(request.getRemoteHost(), request.getRemoteAddr());
     	
     	if(!Host.hosts.contains(host))
