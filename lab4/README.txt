@@ -7,5 +7,4 @@ How does prefixing them influence index size and QPS (query per second). [PART 5
 
 3) Explain why EXPLAIN SELECT ticket.price FROM ticket LEFT JOIN theater on theater.theater_id = ticket.theater_id ORDER BY ticket.price DESC is not using price_idx INDEX.
 
-Tools for next class:
-- brew install elasticsearch
+Please remember to provide explanation for why is MySQL choosing a full table scan instead of using index on price colum when doing a SELECT * FROM tickets ORDER BY price.
