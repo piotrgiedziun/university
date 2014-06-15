@@ -35,3 +35,7 @@
 
 	connect via ssh
 		root/vagrant
+
+4) www
+http://192.168.0.101:7180/
+http://192.168.0.101:50030/
