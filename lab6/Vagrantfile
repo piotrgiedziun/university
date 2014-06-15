@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+    config.vm.define :hadoop1 do |c|
+        c.vm.box = "centos"
+        c.vm.box_url = 'https://s3.amazonaws.com/itmat-public/centos-6.3-chef-10.14.2.box'
+        c.vm.network :hostonly, '192.168.0.101'
+        c.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    	c.vm.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        c.vm.customize ["modifyvm", :id, "--memory", "512"]
+        c.vm.customize ["modifyvm", :id, "--cpus", "2"]
+        c.vm.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+
+    config.vm.define :hadoop2 do |c|
+        c.vm.box = "centos"
+        c.vm.box_url = 'https://s3.amazonaws.com/itmat-public/centos-6.3-chef-10.14.2.box'
+        c.vm.network :hostonly, '192.168.0.102'
+        c.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    	c.vm.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        c.vm.customize ["modifyvm", :id, "--memory", "512"]
+        c.vm.customize ["modifyvm", :id, "--cpus", "2"]
+        c.vm.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+end
