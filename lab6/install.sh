@@ -19,7 +19,7 @@
 	sudo service network reload
 
 	# install cloudera only 192.168.0.101
-	url -O http://archive.cloudera.com/cm4/installer/latest/cloudera-manager-installer.bin
+	curl -O http://archive.cloudera.com/cm4/installer/latest/cloudera-manager-installer.bin
 	chmod +x cloudera-manager-installer.bin
 	sudo ./cloudera-manager-installer.bin
 
