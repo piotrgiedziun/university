@@ -24,3 +24,14 @@
 	sudo ./cloudera-manager-installer.bin
 
 	# open 192.168.0.101:7180
+
+3) instalation
+
+	login as admin/admin
+
+	search for following vms
+		hadoop1
+		hadoop2
+
+	connect via ssh
+		root/vagrant
