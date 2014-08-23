@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<contacts>
+	<contact id="c1">
+		<name>Piotr</name>
+		<surname>Giedziun</surname>
+		<home_address>Wrocław</home_address>
+		<phone>000-00-00</phone>
+		<mobile>+00 000-000-000</mobile>
+		<job>Student</job>
+	</contact>
+	<contact id="c2">
+		<name>Adam</name>
+		<surname>Małysz</surname>
+		<home_address>Wrocław</home_address>
+		<phone>000-00-00</phone>
+		<mobile>+00 000-000-000</mobile>
+		<job>Student</job>
+	</contact>
+</contacts>

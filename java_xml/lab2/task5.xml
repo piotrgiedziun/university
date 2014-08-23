@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="task5.xsl"?>
+
+<rss version="2.0">
+  <channel>
+    <ttl>60</ttl>
+    <title>NYT &gt; Letters</title>
+    <link>http://topics.nytimes.com/top/opinion/editorialsandoped/letters/index.html?</link>
+    <description></description>
+    <copyright>Copyright 2014 The New York Times Company</copyright>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Mar 2014 06:57:27 -0400</lastBuildDate>
+    <image>
+      <url>http://graphics8.nytimes.com/images/section/NytSectionHeader.gif</url>
+      <title>NYT</title>
+      <link>http://www.nytimes.com</link>
+    </image>
+    <item>
+      <title>Racism and Irrational Fear</title>
+      <link>http://www.nytimes.com/2014/03/12/opinion/racism-and-irrational-fear.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Alexis McGill Johnson of Perception.org discusses &#8220;subconscious&#8221; racism.</description>
+      <author>Sample Person</author>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/12/opinion/racism-and-irrational-fear.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Strip Clubs and Neighbors</title>
+      <link>http://www.nytimes.com/2014/03/12/opinion/strip-clubs-and-neighbors.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Assemblywoman Aravella Simotas responds to a front-page article, &amp;#8220;Making Strip Clubs Go Dry, and Then Go Away.&amp;#8221;</description>
+      <author></author>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/12/opinion/strip-clubs-and-neighbors.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Reading Facial Expressions</title>
+      <link>http://www.nytimes.com/2014/03/12/opinion/reading-facial-expressions.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Two professors of psychology discuss studies showing the universality of facial expressions.</description>
+      <author></author>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/12/opinion/reading-facial-expressions.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Training Russia Specialists</title>
+      <link>http://www.nytimes.com/2014/03/12/opinion/training-russia-specialists.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Two readers discuss funding cuts that have affected programs to nurture regional scholars and analysts.</description>
+      <author></author>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/12/opinion/training-russia-specialists.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Violence in Afghanistan</title>
+      <link>http://www.nytimes.com/2014/03/12/opinion/violence-in-afghanistan.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Vanni Cappelli of the Afghanistan Foreign Press Association responds to an editorial.</description>
+      <author></author>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/12/opinion/violence-in-afghanistan.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>End the SAT? Discuss. Cite Evidence.</title>
+      <link>http://www.nytimes.com/2014/03/12/opinion/end-the-sat-discuss-cite-evidence.html?partner=rssnyt&amp;emc=rss</link>
+      <description>&lt;a href="http://www.nytimes.com/2014/03/12/opinion/end-the-sat-discuss-cite-evidence.html?partner=rssnyt&amp;emc=rss"&gt;&lt;img src="http://graphics8.nytimes.com/images/2014/03/12/opinion/0312LETTERSsub/0312LETTERSsub-thumbStandard.jpg" border="0" height="75" width="75" hspace="4" align="left"&gt;&lt;/a&gt;Readers respond to an Op-Ed essay by Jennifer Finney Boylan.</description>
+      <author></author>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/12/opinion/end-the-sat-discuss-cite-evidence.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Russia&#8217;s Intervention in Crimea</title>
+      <link>http://www.nytimes.com/2014/03/12/opinion/russias-intervention-in-crimea.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Readers share their opinions on the developing situation in Crimea and Ukraine.</description>
+      <author></author>
+      <pubDate>Wed, 12 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/12/opinion/russias-intervention-in-crimea.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Limiting Patients&#8217; Choice of Doctors</title>
+      <link>http://www.nytimes.com/2014/03/11/opinion/limiting-patients-choice-of-doctors.html?partner=rssnyt&amp;emc=rss</link>
+      <description>&lt;a href="http://www.nytimes.com/2014/03/11/opinion/limiting-patients-choice-of-doctors.html?partner=rssnyt&amp;emc=rss"&gt;&lt;img src="http://graphics8.nytimes.com/images/2014/03/11/opinion/0311LETTERS/0311LETTERS-thumbStandard.jpg" border="0" height="75" width="75" hspace="4" align="left"&gt;&lt;/a&gt;Readers react to a column by Ezekiel J. Emanuel defending more restrictive doctor networks.</description>
+      <author></author>
+      <pubDate>Tue, 11 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/11/opinion/limiting-patients-choice-of-doctors.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Russians in London, and the Crisis in Ukraine</title>
+      <link>http://www.nytimes.com/2014/03/11/opinion/russians-in-london-and-the-crisis-in-ukraine.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Peter Westmacott, the British ambassador to the United States, responds to an Op-Ed article, &#8220;London&#8217;s Laundry Business.&#8221;</description>
+      <author></author>
+      <pubDate>Tue, 11 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/11/opinion/russians-in-london-and-the-crisis-in-ukraine.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+    <item>
+      <title>Governor Paterson&#8217;s Legacy in New York</title>
+      <link>http://www.nytimes.com/2014/03/11/opinion/governor-patersons-legacy-in-new-york.html?partner=rssnyt&amp;emc=rss</link>
+      <description>Robert A. Perry of the New York Civil Liberties Union writes about the accomplishments of David A. Paterson.</description>
+      <author></author>
+      <pubDate>Tue, 11 Mar 2014 00:00:00 -0500</pubDate>
+      <guid isPermaLink="false">http://www.nytimes.com/2014/03/11/opinion/governor-patersons-legacy-in-new-york.html?partner=rssnyt&amp;emc=rss</guid>
+    </item>
+  </channel>
+</rss>

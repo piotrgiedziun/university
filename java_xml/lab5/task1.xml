@@ -1,0 +1,8 @@
+<pieces>
+	<piece name="Pawn" color="Black" position="A1" />
+	<piece name="Knight" color="Black" position="C2" />
+	<piece name="Bishop" color="White" position="D3" />
+	<piece name="Rook" color="White" position="B5" />
+	<piece name="Queen" color="Black" position="A7" />
+	<piece name="King" color="White" position="E4" />
+</pieces>

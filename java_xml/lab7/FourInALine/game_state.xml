@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<game>
+    <coins>
+        <coin>
+            <x>1</x>
+            <y>7</y>
+            <player_id>0</player_id>
+        </coin>
+    </coins>
+    <current_player_id>1</current_player_id>
+    <mainCoin>
+        <x>1</x>
+        <y>0</y>
+        <player_id>1</player_id>
+    </mainCoin>
+</game>

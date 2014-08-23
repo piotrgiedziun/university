@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+
+<?xml-stylesheet type="text/xsl" href="task4.xsl"?>
+
+<mails>
+  <mail mail="piotrgiedziun@gmail.com">
+    <author>Piotr Giedziun</author>
+    <title>Sample Title</title>
+    <id>1</id>
+  </mail>
+  <mail mail="sample@email.com">
+    <author>Jon Swow</author>
+    <title>Winter is coming!</title>
+    <id>2</id>
+  </mail>
+</mails>

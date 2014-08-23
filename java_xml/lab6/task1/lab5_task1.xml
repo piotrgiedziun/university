@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pieces>
+	<piece name="Pawn" color="Black" position="A1" used="true"/>
+	<piece name="Knight" color="Black" position="C2" used="false"/>
+	<piece name="Bishop" color="White" position="D3" used="true"/>
+	<piece name="Rook" color="White" position="B5" used="false"/>
+	<piece name="Queen" color="Black" position="A7" used="true"/>
+	<piece name="King" color="White" position="E4" used="false"/>
+</pieces>
