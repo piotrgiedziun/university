@@ -1,0 +1,16 @@
+#!/bin/bash
+# w zadanym drzewie katalogów znajdź dowiazania symboliczne nazywające się tak samo jak 
+# obiekt wskazywany.
+
+if [ ! -d $1 ]; then
+	echo 'podaj katalog'
+	exit 1
+fi
+
+find $1 -type l -printf "%p:%l\n" | awk -F ':' '{
+	split($1,file,"/");
+	split($2,link,"/");
+	if ($file[length(file)] == $link[length(link)])
+		print $1;
+}'
+

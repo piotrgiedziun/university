@@ -1,0 +1,22 @@
+#!/bin/bash
+# w zadanym drzewie katalogow znajdz pliki regularne i katalogi nazywajace sie tak samo
+
+find $1 -type d  -printf "%f %p d\n" -or -type f -printf "%f %p f\n" | sort -k3 | sort | (
+	cbuf=""
+	read file file_path file_type
+	while read file2 file2_path file2_type
+	do
+	    if [ $file == $file2 ]; then
+		cbuf=" $cbuf $file_path"
+		if [ $file_type != $file2_type ]; then
+			echo $file2_path $file_type $file2_type
+			for cf in $cbuf
+			do
+				echo " > $cf"
+			done
+			cbuf=""
+		fi
+	    fi
+	    file=$file2;file_path=$file2_path;file_type=$file2_type
+	done
+)

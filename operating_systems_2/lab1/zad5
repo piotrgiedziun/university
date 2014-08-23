@@ -1,0 +1,30 @@
+#!/bin/bash
+# ============================
+# Łączenie w jeden wszystkich plików należących do zadanego katalogu (parametr wywołania 
+# skryptu), o zadanym rozszerzeniu (drugi parametr skryptu). Kolejność, w jakiej pliki zostaną
+# połączone - nieistotna. Treść każdego pliku powinna być poprzedzona nagłówkiem z jego 
+# nazwą.
+# ============================
+# example:
+# ./zad5 . txt output.txt
+# ============================
+
+if [ $# -ne 3 ]; then
+	echo Błędna ilość argumentów
+	exit
+fi
+
+if [ ! -d $1 ]; then
+	echo Błędny katalog
+	exit	
+fi
+
+if [ -f $3 ]; then
+	rm $3
+fi
+
+for file in $1/*.$2; do
+	echo ================= >> $3
+	echo $file >> $3
+	echo $(cat $file) >> $3
+done
