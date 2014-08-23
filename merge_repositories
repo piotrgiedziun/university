@@ -1,0 +1,6 @@
+# for each repo
+
+git remote add -f PROJECT_NAME GITHUB_URL
+git merge -s ours --no-commit PROJECT_NAME/master
+git read-tree --prefix=PROJECT_NAME/ -u PROJECT_NAME/master
+git commit
