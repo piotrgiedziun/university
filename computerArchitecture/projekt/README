@@ -1,0 +1,10 @@
+s184731@tesla:~$ lspci | grep -i nvidia
+02:00.0 VGA compatible controller: nVidia Corporation Device 1080 (rev a1)
+02:00.1 Audio device: nVidia Corporation Device 0e09 (rev a1)
+
+s184731@tesla:~$ uname -m && cat /etc/*release
+i686
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=9.04
+DISTRIB_CODENAME=jaunty
+DISTRIB_DESCRIPTION="Ubuntu 9.04"

@@ -1,0 +1,22 @@
+# create/run vnc session
+vnc4server
+
+# check port number (default: 5900, pwr: 5901)
+netstat -tab | grep vnc
+
+
+# display list
+ls /home/[user]/.vnc/
+
+# remove session
+vncserver -kill :[display id (default: 1)] 
+
+# in order to improve visual performance u can simply 
+# replace twm with gnome
+vi /home/[user]/.vnc/xstartup
+*	find:
+*	"twm &"
+*	replace with:
+*	"exec gnome-session &"
+vncserver -kill :[display id (default: 1)]
+vnc4server
