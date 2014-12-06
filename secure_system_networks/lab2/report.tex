@@ -1,6 +1,5 @@
 \documentclass[a4paper, 11pt]{article}
 \usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
-\usepackage{lipsum} %This package just generates Lorem Ipsum filler text. 
 \usepackage{fullpage} % changes the margin
 \usepackage{graphicx}
 \usepackage{minted} % sudo easy_install Pygments  
@@ -22,7 +21,7 @@ Our task was to scan given network range and investigate found services. Investi
 In addition we were asked to run additional test for mail servers, in order to find out, if "open mail relay" were found.
 An open mail relay is a name for an SMPT server configured in such a way that it allows anyone on the Internet to send e-mail through it.
 
-\section*{Network scaning}
+\section*{Network scanning}
 
 The lab room local network (in my case IP range 156.17.40.1-254) was scanned for all services such as SSH, SMTP, FTP, HTTP, HTTPS.
 Due to the excessively long scanning time, I decided to limit the range of ports to 22-443 (range of SSH to the HTTPS).
