@@ -4,7 +4,7 @@ SERVERS = ["156.17.40.148", "156.17.40.162", "156.17.40.46", "156.17.40.85"]
 
 for SERVER in SERVERS:
     FROM = "test@pwr.wroc.pl"
-    TO = ["xx@plonk.ict.pwr.wroc.pl"]
+    TO = ["xx@plonk.ict.pwr.wroc.pl", "zxcvbnm@heaven.org"]
 
     message = """\
     From: %s
@@ -15,7 +15,7 @@ for SERVER in SERVERS:
     """ % (FROM, ", ".join(TO), "test", "test")
 
     server = smtplib.SMTP(SERVER)
-    server.set_debuglevel(True)
+    #server.set_debuglevel(True)
     try:
         server.sendmail(FROM, TO, message)
     except smtplib.SMTPRecipientsRefused, e:
