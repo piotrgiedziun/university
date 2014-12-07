@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{minted} % sudo easy_install Pygments  
 \usepackage[section]{placeins}
+\usepackage[utf8]{inputenc} % polish characters
 
 
 \begin{document}
@@ -13,19 +14,19 @@
 dr inż. Tomasz Surmacz
 
 \section*{Abstract}
-This report presents implementation and analysis of network scanner. This paper describes consecutive iterations of scanning software and some basics analysis.
-For a selected internal network I found several servers with outdated and insecure software installed. However, the goal of this task did not consisted of vulnerability testing. Few open SMTP servers were found, although none of the four were actually vulnerable.
+This report presents implementation and analysis of network scanner. This paper describes consecutive iterations of scanning code and some basic analysis.
+For a selected internal network I found several servers with outdated and insecure software installed. However, the goal of this task did not consist of vulnerability testing, therefore found flaws was not tested. Few open SMTP servers were found, although none of them were actually vulnerable.
 
 \section*{Introduction}
-Our task was to scan given network range and investigate found services. Investigation require us to gather detailed information about each opened service (such as version, name). Having those information we are able to determine if given software might be harmful for the server. 
+Our task was to scan given IP range and investigate found services. Investigation require us to gather detailed information about each opened service (such as version, name). Having those information we are able to determine if given software might be harmful for the server. 
 In addition we were asked to run additional test for mail servers, in order to find out, if "open mail relay" were found.
 An open mail relay is a name for an SMPT server configured in such a way that it allows anyone on the Internet to send e-mail through it.
 
 \section*{Network scanning}
 
 The lab room local network (in my case IP range 156.17.40.1-254) was scanned for all services such as SSH, SMTP, FTP, HTTP, HTTPS.
-Due to the excessively long scanning time, I decided to limit the range of ports to 22-443 (range of SSH to the HTTPS).
-I'm aware of the fact, that redirected ports (such as 22 $\rightarrow$ 2222) will not be found due to enforced limitation. However, in order to fit in given time I had to limit that range.
+Due to the excessively long scanning time, I decided to limit the range of ports to 22-443 (range from SSH to HTTPS).
+I'm aware of the fact, that redirected ports (such as 22 $\rightarrow$ 2222, etc.) will not be found due to enforced limitation. However, in order to fit in given time I had to limit that range.
 
 I decided to use "Network Mapper" (nmap) to scan network. It's open source software, that uses raw IP packets in novel ways to determine what hosts are available on the network, what services (application name and version) those hosts are offering, what operating systems they are running, what type of packet filters/firewalls are in use, and dozens of other characteristics.
 
@@ -52,8 +53,8 @@ Almost all services were running on default port, with only exception, which cau
 
 \section*{Looking for insecure software}
 
-Another part of the laboratory was to perform manual scan of obsolete or insecure version of software installed on scanned machines.
-We had all necessary informations already, therefore this part was rather simple. There are several websites thats aggregates information about specific application vulnerabilities, one of them have an API, so entire process could be automatized.
+Another part of the laboratory was to find out if obsolete or insecure software is installed.
+We had all necessary informations already, therefore this part was rather simple. There are several websites which gather information about specific application vulnerabilities, one of them have an API, so entire process could be automatized.
 
 List of machines that have vulnerable software installed (in case of multiple instances running the same version of software - only one was listed)
 
@@ -104,7 +105,7 @@ I also did some private analysis on previously mentioned PHP script on machine 1
 \section*{Open mail relay scan}
 All previously found mail servers should be tested whether they are "closed" or "open relay". 
 Following code (Listing \ref{lst:scan_mail}) was used to obtain list of servers with available SMTP.
-It's slight modified version, looking only for port 25. List of found services is shown is Figure \ref{fig:mail_scan}.
+It's slight modified version, looking only for port 25 (I forgot about port 465). List of found services is shown is Figure \ref{fig:mail_scan}.
 
 \begin{listing}[!htb]    
 \caption{Network Scanner - just mail services.}    
