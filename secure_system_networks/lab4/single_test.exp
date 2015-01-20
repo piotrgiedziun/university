@@ -1,0 +1,8 @@
+#!/usr/bin/expect
+spawn ./keygen-en
+
+expect "USER: "
+send "[lindex $argv 0]\r"
+expect "KEY: "
+send "[lindex $argv 1]\r"
+interact

@@ -1,0 +1,129 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage{listings}
+\usepackage{fullpage} % changes the margin
+\usepackage{graphicx}
+\usepackage{minted} % sudo easy_install Pygments  
+\usepackage[section]{placeins}
+\usepackage[utf8]{inputenc} % polish characters
+
+
+\begin{document}
+\noindent
+\large\textbf{Post-Lab 4 Report} \hfill \textbf{Piotr Giedziun} 184731\\
+\normalsize Secure Systems and Networks \hfill  Lab Date: 13/01/15 \\
+dr inż. Tomasz Surmacz
+
+\section*{Abstract}
+This report describes my attempts to perform reverse engineering on executable file. Task was accomplished on both debug and release application.
+Following applications were used: gdb, objdump and hopper disassembler v3. Paper covers brute-force and reverse engineering approaches.
+
+
+\section*{Introduction}
+This time around, instead of writing a code, we were ask to perform reverse engineering on existing one.
+For given ELF 64-bit LSB executable we had to find out the code. Application had some kind of GUI where user were asked to enter his student id and password.
+Access was granted only when username and password was valid. We were also told that application have internal password generator. 
+In addition to that, we also received one pair of valid data (0 - student id, 12345678 - password).
+
+\section*{Reverse engineering}
+
+I will try to explain shortly explain myself before I will share my first thoughts on this task.
+My assumption was that password is hashed, so I used the same mindset as for MD5 hash cracking.
+I decided that I will start by trying to brute-force access. It's the simplest way to achieve our goal. At least I thought so.
+Due to the fact that my further assumptions was invalid I decided to bury this solution.
+
+\noindent Brute-force approach failed due to following reasons:
+\begin{itemize}
+\item I assumed that password always consists of 8 digital characters.
+\item There is $10^8-10^7$ possible solutions.
+\item Execution of one test took about 1 seconds.
+\item Total time of execution estimated to roughly 2 years (random probability)
+\end{itemize}
+
+Using expect and python I was quickly able to prepare application.
+
+\begin{listing}[!htb]
+\caption{Execute keygen-en application and inject inputs}
+\inputminted[mathescape, fontfamily=tt, frame=leftline,framerule=0.4pt,framesep=2mm]{bash}{single_test.exp}
+\end{listing}
+
+\begin{listing}[!htb]
+\caption{Full search}
+\inputminted[mathescape, fontfamily=tt, frame=leftline,framerule=0.4pt,framesep=2mm]{python}{force.py}
+\end{listing}
+
+Knowing that "Act first, think later" approach failed,  I decided to decompile application.
+Using objdump I was able to receive application source code.
+
+\begin{lstlisting}[language=bash]
+  $ wget http://dream.ict.pwr.wroc.pl/ssn/keygen/keygen-en-stripped
+  $ objdump -S keygen-en-symbols > code.s
+\end{lstlisting}
+
+I knew that at some point generated password will be compared with user input. At some point generated password will be stored in one of available registers.
+I did some research about gdb instructions, there is a way to set a watcher for variable/register with expression. Each time expression will be true, application will stop.
+
+My idea was to watch all registers, at some point application should break. Next step would be to display all registers values (i r) and find out where it's stored.
+I can do such thing, because I know password for student ID equal to 0. Anyway, It's not working. Somehow it's causing SEGFAULT (it's working fine for integers).
+
+\begin{lstlisting}[language=bash]
+b __libc_start_main
+r
+watch $rbp if strcmp($rbp, "12345678") == 0
+watch $rsi if strcmp($rsi, "12345678") == 0
+...
+c
+\end{lstlisting}
+
+
+In obtained source code (.text section) I was looking for calls to functions like fgets, getchar, scanf etc.
+After gathering input data application have to invoke password generator, my idea was to find out memory address.
+Next step would be to find generator function virtual address in disassembled source file.
+I was instructed to skip password generation function, instead search for logic that will compare result with user input.
+From this point it's really easy to perform. 
+
+\begin{lstlisting}[language=bash]
+  4008ce:	48 89 ce             	mov    %rcx,%rsi
+  4008d1:	48 89 c7             	mov    %rax,%rdi
+  4008d4:	e8 97 fd ff ff       	callq  400670 <strncmp@plt>
+  4008d9:	89 45 f8             	mov    %eax,-0x8(%rbp)
+  4008dc:	83 7d f8 00          	cmpl   $0x0,-0x8(%rbp)
+  4008e0:	75 0c                	jne    4008ee <fflush@plt+0x20e>
+\end{lstlisting}
+
+I have found strcmp usage (function compares two strings). Linux is using virtual memory, so address 0x4008d4 will be always the same.
+Now, all I had to do was to debbug application and check arguments of strcmp function.
+
+\begin{lstlisting}[language=bash]
+gdb keygen/keygen-en-stripped
+(gdb) b *0x4008d4
+(gdb) r
+(gdb) printf "%s\n", $rdi
+a
+(gdb) printf "%s\n", $rsi
+7vrf4kin
+\end{lstlisting}
+
+My student ID is 184731, generated password - \textbf{7vrf4kin}.
+
+\section*{Gen function}
+
+Using hooper I was able to decompile gen function source.
+
+\begin{listing}[!htb]
+\caption{Password gen function}
+\inputminted[mathescape, fontfamily=tt, frame=leftline,framerule=0.4pt,framesep=2mm]{c}{keygen.c}
+\end{listing}
+
+In my case password is generated from var\_18, reverse order of my password is "nik4fr". It's part of var\_18.
+It's seems like code is reading these buffers in both orders (depending on student ID), starting from point that's also calculated from student ID.
+
+\begin{thebibliography}{9}
+
+\bibitem{gdbdocs}  http://ftp.gnu.org/old-gnu/Manuals/gdb/html\_node/gdb\_28.html
+\bibitem{hopperapp} http://www.hopperapp.com/
+\bibitem{dream} http://dream.ict.pwr.wroc.pl/ssn/index.en.html
+
+\end{thebibliography}
+
+\end{document}
